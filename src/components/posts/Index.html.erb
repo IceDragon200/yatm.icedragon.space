@@ -1,0 +1,18 @@
+<section class="Page Posts">
+	<% data[:posts].each do |post| %>
+		<div class="box ba bw1 flex flex-column">
+			<div class="header">
+				<div class="heading bg0 fg1 ph3 pv2">
+					<h5><%= post[:date].strftime("%Y/%m/%d @ %H:%m %Z") %></h5>
+					<h2>
+						<a class="fg1" href="<%= post[:path] %>"><%= post[:title] %></a>
+					</h2>
+				</div>
+			</div>
+
+			<div class="content ph3 pv2">
+				<%= post[:summary] %>
+			</div>
+		</div>
+	<% end %>
+</section>

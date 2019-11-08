@@ -1,0 +1,21 @@
+_buf = ''; _buf << '<section class="Page Mods">
+	<div class="box ba bw1 flex flex-column flex-auto">
+		<div class="header">
+			<h2 class="bg0 fg1 ph3 pv2" title="'; _buf << ( data[:mod_confs].size ).to_s; _buf << ' Total Mods">
+				'; _buf << ( data[:mod_confs].size ).to_s; _buf << ' Mods
+			</h2>
+		</div>
+
+		<div class="content">
+			<ul>
+';				 data[:mod_confs].sort_by { |m| m['name'] }.each do |mod_conf| 
+ _buf << '					<li>
+						<a href="/mods/'; _buf << ( mod_conf['name'] ).to_s; _buf << '">'; _buf << ( mod_conf['name'] ).to_s; _buf << '</a>
+					</li>
+';				 end 
+ _buf << '			</ul>
+		</div>
+	</div>
+</section>
+';
+_buf.to_s

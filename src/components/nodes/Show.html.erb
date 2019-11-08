@@ -1,0 +1,57 @@
+<section class="Page Node">
+	<div class="box ba bw1 flex flex-column flex-auto">
+		<div class="header">
+			<div class="heading bg0 fg1 ph3 pv2">
+				<h5><%= data[:mod_name] %></h5>
+				<h2><%=
+					display_name = data[:name]
+
+					data[:sub_nodes].each do |(node_name, node_data)|
+						display_name = node_data["description"] || display_name
+						break
+					end
+
+					display_name
+				%></h2>
+			</div>
+		</div>
+
+		<div class="content">
+			<div>
+				<div class="ma3 dib">
+					<% data[:sub_nodes].each do |(node_name, node_data)| %>
+		    	<img src="<%= import_asset('atlas:/images/nodes/' + node_data[:mod_name] + '/' + node_data[:name] + '/x4.gif') %>" />
+		    	<% end %>
+		    	<div>
+		    		<h4 class="bg0 fg1 ph3 pv1 dib">Texture Atlas(es)</h4>
+		    	</div>
+		    </div>
+				<!--<div class="ma3 dib">
+				  <canvas id="model-canvas" data-node-name="<%= data[:node_name] %>">
+			    </canvas>
+			    <div>
+		    		<h4 class="bg0 fg1 ph3 pv1 dib">Model</h4>
+		    	</div>
+			  </div>-->
+			</div>
+
+			<% if data[:lore] then %>
+				<div class="Lore">
+					<h3 class="bg0 fg1 ph3 pv2">Lore</h3>
+					<p><%= data[:lore] %></p>
+				</div>
+			<% end %>
+
+			<div class="Recipes">
+				<h3 class="bg0 fg1 ph3 pv2">Recipes</h3>
+				<% data[:sub_nodes].each do |(node_name, node_data)| %>
+					<p><%= node_data["recipe"] %></p>
+				<% end %>
+			</div>
+		</div>
+	</div>
+
+	<script id="node_box" type="application/json">
+		<%= JSON.dump(data[:node_box]) %>
+	</script>
+</section>

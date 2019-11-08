@@ -1,0 +1,16 @@
+_buf = ''; _buf << '<section class="Page Post">
+	<div class="box ba bw1 flex flex-column flex-auto">
+		<div class="header">
+			<div class="heading bg0 fg1 ph3 pv2">
+				<h5>'; _buf << ( data[:post][:date].strftime("%Y/%m/%d @ %H:%m %Z") ).to_s; _buf << '</h5>
+				<h2>'; _buf << ( data[:post][:title] ).to_s; _buf << '</h2>
+			</div>
+		</div>
+
+		<div class="contents ph3 pv2">
+			'; _buf << ( yield ).to_s; _buf << '
+'; _buf << '		</div>
+	</div>
+</section>
+';
+_buf.to_s

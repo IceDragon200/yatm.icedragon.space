@@ -1,0 +1,53 @@
+_buf = ''; _buf << '<section class="Page Design">
+	<h1>Site Design</h1>
+
+	<div class="mv3">
+		<h1 class="mb2">Header I</h1>
+		<h2 class="mb2">Header II</h2>
+		<h3 class="mb2">Header III</h3>
+		<h4 class="mb2">Header IV</h4>
+		<h5 class="mb2">Header V</h5>
+		<h6 class="mb2">Header VI</h6>
+	</div>
+
+	<div class="mv3">
+		<h1 class="mb2 bg0 fg1 ph3 pv1">Header I</h1>
+		<h2 class="mb2 bg0 fg1 ph3 pv1">Header II</h2>
+		<h3 class="mb2 bg0 fg1 ph3 pv1">Header III</h3>
+		<h4 class="mb2 bg0 fg1 ph3 pv1">Header IV</h4>
+		<h5 class="mb2 bg0 fg1 ph3 pv1">Header V</h5>
+		<h6 class="mb2 bg0 fg1 ph3 pv1">Header VI</h6>
+	</div>
+
+	<div class="mv3">
+		<p>
+			The quick brown fox jumps over the lazy dog.
+		</p>
+	</div>
+
+	<div class="box">
+		<div class="header">
+			<h3 class="bg0 fg1 ph3 pv1">Box (w/o border)</h3>
+		</div>
+
+		<div class="content ph3 pv1">
+			<b>Sub-heading</b>
+			<p>The quick brown fox jumps over the lazy dog.</p>
+		</div>
+	</div>
+
+	<div class="box ba bw1">
+		<div class="header">
+			<h1 class="bg0 fg1 ph3 pv1">Box</h1>
+		</div>
+
+		<div class="content ph3 pv1">
+			<b>Sub-heading</b>
+			<p>The quick brown fox jumps over the lazy dog.</p>
+		</div>
+	</div>
+
+	<a href="#">Here</a>
+</section>
+';
+_buf.to_s

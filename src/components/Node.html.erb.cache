@@ -1,0 +1,16 @@
+_buf = ''; _buf << '<section class="Page Node">
+	<h3>'; _buf << ( data[:node_data]["description"] ).to_s; _buf << '</h3>
+	<h6>'; _buf << ( data[:node_name] ).to_s; _buf << '</h6>
+
+	<div>
+		<h4>Lore</h4>
+		<p>'; _buf << ( data[:node_data]["lore"] ).to_s; _buf << '</p>
+	</div>
+
+	<div>
+		<h4>Recipes</h4>
+		<p>'; _buf << ( data[:node_data]["recipe"] ).to_s; _buf << '</p>
+	</div>
+</section>
+';
+_buf.to_s

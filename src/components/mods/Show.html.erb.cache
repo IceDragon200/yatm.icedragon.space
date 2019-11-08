@@ -1,0 +1,85 @@
+_buf = ''; _buf << '<section class="Page Mod">
+	<div class="box ba bw1 flex flex-column flex-auto">
+		<div class="header">
+			<h2 class="bg0 fg1 ph3 pv2">'; _buf << ( data[:mod_conf]['name'] ).to_s; _buf << '</h2>
+		</div>
+
+		<div class="content">
+			<p class="Description"></p>
+
+';			 if data[:mod_conf]['depends'] || data[:mod_conf]['optional_depends'] 
+ _buf << '				<div class="Dependencies">
+					<h3 class="bg0 fg1 ph3 pv2">Dependencies</h3>
+					<ul>
+';						 if data[:mod_conf]['depends'] 
+							 data[:mod_conf]['depends'].split(/\s*,\s*/).each do |mod_name| 
+								 unless mod_name.strip.empty? 
+ _buf << '								<li>
+';									 if data[:mods][mod_name] 
+ _buf << '										<a href="/mods/'; _buf << ( mod_name ).to_s; _buf << '">
+											'; _buf << ( mod_name ).to_s; _buf << '
+'; _buf << '										</a>
+';									 else 
+ _buf << '										'; _buf << ( mod_name ).to_s; _buf << '
+';									 end 
+ _buf << '								</li>
+';								 end 
+							 end 
+						 end 
+						 if data[:mod_conf]['optional_depends'] 
+							 data[:mod_conf]['optional_depends'].split(/\s*,\s*/).each do |mod_name| 
+								 unless mod_name.strip.empty? 
+ _buf << '								<li>
+';									 if data[:mods][mod_name] 
+ _buf << '										<a href="/mods/'; _buf << ( mod_name ).to_s; _buf << '">
+											'; _buf << ( mod_name ).to_s; _buf << ' (Optional)
+										</a>
+';									 else 
+ _buf << '										'; _buf << ( mod_name ).to_s; _buf << ' (Optional)
+';									 end 
+ _buf << '								</li>
+';								 end 
+							 end 
+						 end 
+ _buf << '					</ul>
+				</div>
+';			 end 
+ _buf << '
+';			 unless data[:nodes_by_basename].empty? 
+ _buf << '				<div class="Nodes">
+					<h3 class="bg0 fg1 ph3 pv2">Nodes</h3>
+					<ul>
+';						 data[:nodes_by_basename].keys.sort_by do |name|
+							nodes = data[:nodes_by_basename][name]
+							(_, node_data) = nodes.first
+							node_data["base_description"] || node_data["description"] || name
+						end.each do |name|
+							node_mod, node_basename = name.split(":")
+
+						  display_name = name
+						  data[:nodes_by_basename][name].each do |(node_name, node_data)|
+						  	if node_data["base_description"] then
+						  		display_name = node_data["base_description"]
+						  		break
+						  	end
+
+						  	if node_data["description"] then
+						  		display_name = node_data["description"]
+						  		break
+						  	end
+						  end
+
+							#_node_data = data[:nodes][node_basename]
+							
+ _buf << '							<li>
+								<a href="/nodes/'; _buf << ( node_mod ).to_s; _buf << '/'; _buf << ( node_basename ).to_s; _buf << '">'; _buf << ( display_name ).to_s; _buf << '</a>
+							</li>
+';						 end 
+ _buf << '					</ul>
+				</div>
+';			 end 
+ _buf << '		</div>
+	</div>
+</section>
+';
+_buf.to_s

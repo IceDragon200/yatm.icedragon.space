@@ -1,0 +1,83 @@
+<section class="Page Mod">
+	<div class="box ba bw1 flex flex-column flex-auto">
+		<div class="header">
+			<h2 class="bg0 fg1 ph3 pv2"><%= data[:mod_conf]['name'] %></h2>
+		</div>
+
+		<div class="content">
+			<p class="Description"></p>
+
+			<% if data[:mod_conf]['depends'] || data[:mod_conf]['optional_depends'] %>
+				<div class="Dependencies">
+					<h3 class="bg0 fg1 ph3 pv2">Dependencies</h3>
+					<ul>
+						<% if data[:mod_conf]['depends'] %>
+							<% data[:mod_conf]['depends'].split(/\s*,\s*/).each do |mod_name| %>
+								<% unless mod_name.strip.empty? %>
+								<li>
+									<% if data[:mods][mod_name] %>
+										<a href="/mods/<%= mod_name %>">
+											<%= mod_name %>
+										</a>
+									<% else %>
+										<%= mod_name %>
+									<% end %>
+								</li>
+								<% end %>
+							<% end %>
+						<% end %>
+						<% if data[:mod_conf]['optional_depends'] %>
+							<% data[:mod_conf]['optional_depends'].split(/\s*,\s*/).each do |mod_name| %>
+								<% unless mod_name.strip.empty? %>
+								<li>
+									<% if data[:mods][mod_name] %>
+										<a href="/mods/<%= mod_name %>">
+											<%= mod_name %> (Optional)
+										</a>
+									<% else %>
+										<%= mod_name %> (Optional)
+									<% end %>
+								</li>
+								<% end %>
+							<% end %>
+						<% end %>
+					</ul>
+				</div>
+			<% end %>
+
+			<% unless data[:nodes_by_basename].empty? %>
+				<div class="Nodes">
+					<h3 class="bg0 fg1 ph3 pv2">Nodes</h3>
+					<ul>
+						<% data[:nodes_by_basename].keys.sort_by do |name|
+							nodes = data[:nodes_by_basename][name]
+							(_, node_data) = nodes.first
+							node_data["base_description"] || node_data["description"] || name
+						end.each do |name|
+							node_mod, node_basename = name.split(":")
+
+						  display_name = name
+						  data[:nodes_by_basename][name].each do |(node_name, node_data)|
+						  	if node_data["base_description"] then
+						  		display_name = node_data["base_description"]
+						  		break
+						  	end
+
+						  	if node_data["description"] then
+						  		display_name = node_data["description"]
+						  		break
+						  	end
+						  end
+
+							#_node_data = data[:nodes][node_basename]
+							%>
+							<li>
+								<a href="/nodes/<%= node_mod %>/<%= node_basename %>"><%= display_name %></a>
+							</li>
+						<% end %>
+					</ul>
+				</div>
+			<% end %>
+		</div>
+	</div>
+</section>

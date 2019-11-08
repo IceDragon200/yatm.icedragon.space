@@ -1,0 +1,19 @@
+<section class="Page Mods">
+	<div class="box ba bw1 flex flex-column flex-auto">
+		<div class="header">
+			<h2 class="bg0 fg1 ph3 pv2" title="<%= data[:mod_confs].size %> Total Mods">
+				<%= data[:mod_confs].size %> Mods
+			</h2>
+		</div>
+
+		<div class="content">
+			<ul>
+				<% data[:mod_confs].sort_by { |m| m['name'] }.each do |mod_conf| %>
+					<li>
+						<a href="/mods/<%= mod_conf['name'] %>"><%= mod_conf['name'] %></a>
+					</li>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+</section>

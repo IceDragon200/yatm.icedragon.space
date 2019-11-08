@@ -1,0 +1,14 @@
+<section class="Page Post">
+	<div class="box ba bw1 flex flex-column flex-auto">
+		<div class="header">
+			<div class="heading bg0 fg1 ph3 pv2">
+				<h5><%= data[:post][:date].strftime("%Y/%m/%d @ %H:%m %Z") %></h5>
+				<h2><%= data[:post][:title] %></h2>
+			</div>
+		</div>
+
+		<div class="contents ph3 pv2">
+			<%= yield %>
+		</div>
+	</div>
+</section>

@@ -1,0 +1,20 @@
+_buf = ''; _buf << '<section class="Page Posts">
+';	 data[:posts].each do |post| 
+ _buf << '		<div class="box ba bw1 flex flex-column">
+			<div class="header">
+				<div class="heading bg0 fg1 ph3 pv2">
+					<h5>'; _buf << ( post[:date].strftime("%Y/%m/%d @ %H:%m %Z") ).to_s; _buf << '</h5>
+					<h2>
+						<a class="fg1" href="'; _buf << ( post[:path] ).to_s; _buf << '">'; _buf << ( post[:title] ).to_s; _buf << '</a>
+					</h2>
+				</div>
+			</div>
+
+			<div class="content ph3 pv2">
+				'; _buf << ( post[:summary] ).to_s; _buf << '
+'; _buf << '			</div>
+		</div>
+';	 end 
+ _buf << '</section>
+';
+_buf.to_s
