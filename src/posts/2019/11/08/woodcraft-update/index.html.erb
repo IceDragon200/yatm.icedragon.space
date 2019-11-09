@@ -1,0 +1,32 @@
+<%
+  data[:post][:title] = "Woodcraft Update"
+  data[:post][:date] = Time.parse("2019-11-08T21:00:00Z")
+  data[:post][:summary] = "Hello there, I'd like to announce that the YATM Woodcraft module has been updated!"
+
+  render_node = proc do |name|
+    component("nodes/Show", minimal: true, **data[:nodes_basename_state][name])
+  end
+
+  render_craftitem = proc do |name|
+    component("craftitems/Show", minimal: true, **data[:craftitems_basename_state][name])
+  end
+%>
+<p>Hello there, I'd like to announce that the YATM Woodcraft module has been updated!</p>
+
+<b>So what's new?</b>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
+<div>
+  <%= render_node.("yatm_woodcraft:sawmill") %>
+  <%= render_node.("yatm_woodcraft:dust_bin") %>
+  <%= render_node.("yatm_woodcraft:sawdust_block") %>
+  <%= render_node.("yatm_woodcraft:packed_sawdust_block") %>
+  <%= render_node.("yatm_woodcraft:wood_bark") %>
+  <%= render_node.("yatm_woodcraft:wood_core") %>
+  <%= render_node.("yatm_woodcraft:wood_panel") %>
+</div>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Craft Items</h3>
+<div>
+  <%= render_craftitem.("yatm_woodcraft:sawdust") %>
+</div>

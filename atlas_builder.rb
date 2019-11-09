@@ -18,7 +18,6 @@ module AtlasBuilder
     @texture_map ||= begin
       result = {}
 
-
       Dir.glob(File.join(ENV.fetch('YATM_MINETEST_GAME_MODS_PATH'), "**/textures/*.png")).each do |filename|
         result[File.basename(filename)] = filename
       end
@@ -42,7 +41,7 @@ module AtlasBuilder
     end.split("^")[0]
   end
 
-  def self.build_atlas(mod_name, node_name, node_data, target_dir, root_tmp_dir)
+  def self.build_node_atlas(mod_name, node_name, node_data, target_dir, root_tmp_dir)
     tmp_dir = File.join(root_tmp_dir, mod_name, node_name)
     if node_data["tiles"] then
     else

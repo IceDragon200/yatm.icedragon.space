@@ -1,0 +1,38 @@
+<section class="Page Craftitems">
+	<div class="box ba bw1 flex flex-column flex-auto">
+		<div class="header">
+			<h2 class="bg0 fg1 ph3 pv2" title="<%= data[:craftitems].size %> Total Craft Items">
+				<%= data[:craftitems_by_basename].size %> Craft Items
+			</h2>
+		</div>
+
+		<div class="content">
+			<ul>
+				<% data[:craftitems_by_basename].keys.sort_by do |name|
+					craftitems = data[:craftitems_by_basename][name]
+					(_, craftitem_data) = craftitems.first
+					craftitem_data["base_description"] || craftitem_data["description"] || name
+				end.each do |name|
+					 craftitem_mod, craftitem_basename = name.split(":")
+
+					 display_name = name
+					 data[:craftitems_by_basename][name].each do |(craftitem_name, craftitem_data)|
+					 	if craftitem_data["base_description"] then
+					 		display_name = craftitem_data["base_description"]
+					 		break
+					 	end
+
+					 	if craftitem_data["description"] then
+					 		display_name = craftitem_data["description"]
+					 		break
+					 	end
+					 end
+					%>
+					<li>
+						<a href="/craftitems/<%= craftitem_mod %>/<%= craftitem_basename %>"><%= display_name %></a>
+					</li>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+</section>

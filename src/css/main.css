@@ -172,6 +172,32 @@ header nav a:focus {
   color: #009cfd;
 }
 
+.focus-container .show-on-focus {
+  display: none;
+}
+
+.focus-container:focus {
+}
+
+.focus-ba:focus {
+  border: 1px solid #000;
+}
+
+.focus-border-bg0:focus {
+  border-color: #000;
+}
+
+.focus-bg0:focus {
+  background: #000;
+}
+
+.focus-fg1:focus {
+  color: #FFF;
+}
+
+.focus-container:focus .show-on-focus {
+  display: initial;
+}
 
 @media print {
   header {
@@ -182,6 +208,14 @@ header nav a:focus {
     -webkit-print-color-adjust: exact;
     color-adjust: exact;
   }
+}
+
+.va-top {
+  vertical-align: top;
+}
+
+.va-text-bottom {
+  vertical-align: text-bottom;
 }
 
 /*

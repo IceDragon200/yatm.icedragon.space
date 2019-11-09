@@ -1,0 +1,38 @@
+<section class="Page Tools">
+	<div class="box ba bw1 flex flex-column flex-auto">
+		<div class="header">
+			<h2 class="bg0 fg1 ph3 pv2" title="<%= data[:tools].size %> Total Tools">
+				<%= data[:tools_by_basename].size %> Tools
+			</h2>
+		</div>
+
+		<div class="content">
+			<ul>
+				<% data[:tools_by_basename].keys.sort_by do |name|
+					tools = data[:tools_by_basename][name]
+					(_, tool_data) = tools.first
+					tool_data["base_description"] || tool_data["description"] || name
+				end.each do |name|
+					 tool_mod, tool_basename = name.split(":")
+
+					 display_name = name
+					 data[:tools_by_basename][name].each do |(tool_name, tool_data)|
+					 	if tool_data["base_description"] then
+					 		display_name = tool_data["base_description"]
+					 		break
+					 	end
+
+					 	if tool_data["description"] then
+					 		display_name = tool_data["description"]
+					 		break
+					 	end
+					 end
+					%>
+					<li>
+						<a href="/tools/<%= tool_mod %>/<%= tool_basename %>"><%= display_name %></a>
+					</li>
+				<% end %>
+			</ul>
+		</div>
+	</div>
+</section>

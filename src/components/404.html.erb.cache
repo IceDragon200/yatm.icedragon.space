@@ -1,8 +1,0 @@
-_buf = ''; _buf << '<section class="Page 404">
-	<h1>
-		404 Not Found
-	</h1>
-	<p>What you\'re looking for isn\'t here.</p>
-</section>
-';
-_buf.to_s
