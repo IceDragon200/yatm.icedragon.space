@@ -678,10 +678,15 @@ class Application
     end
   end
 
+  def handle_public
+    system("rsync", "-haPc", "--inplace", @public_dir + "/", @dist_dir)
+  end
+
   def run(argv)
     @src_dir = File.join(__dir__, 'src')
     @dist_dir = File.join(__dir__, 'dist')
     @temp_dir = File.join(__dir__, 'tmp')
+    @public_dir = File.join(__dir__, 'public')
 
     #FileUtils.rm_rf @dist_dir
     FileUtils.mkdir_p @dist_dir
@@ -700,6 +705,8 @@ class Application
     build_error_pages()
 
     handle_assets()
+
+    handle_public()
 
     puts "Syncing"
     system("sync")

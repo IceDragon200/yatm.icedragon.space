@@ -218,6 +218,14 @@ header nav a:focus {
   vertical-align: text-bottom;
 }
 
+.mnw-100 {
+  min-width: 100%;
+}
+
+.mxw-100 {
+  max-width: 100%;
+}
+
 /*
 
    DISPLAY

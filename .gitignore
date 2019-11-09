@@ -1,6 +1,6 @@
 /tmp
 /dist
-/screenshots
+/public
 /deploy.sh
 /deploy-screenshots.sh
 /watch.sh
