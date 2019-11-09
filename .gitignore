@@ -4,3 +4,4 @@
 /deploy.sh
 /deploy-screenshots.sh
 /watch.sh
+*.erb.cache
