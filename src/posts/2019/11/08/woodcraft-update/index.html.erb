@@ -13,7 +13,6 @@
 %>
 <p>Hello there, I'd like to announce that the YATM Woodcraft module has been updated!</p>
 
-<b>So what's new?</b>
 
 <h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
 <div>
@@ -29,4 +28,29 @@
 <h3 class="bg0 fg1 ph3 pv2 mb3">Craft Items</h3>
 <div>
   <%= render_craftitem.("yatm_woodcraft:sawdust") %>
+</div>
+
+<b>So what's new?</b>
+
+<p>Not too many new things, the Sawmill has finally been implemented.</p>
+<p>Right-click on it with any Tree, or Wood node to process it, for now every 4 blocks processed in this manner will yield 1 Sawdust.</p>
+<p>And with that, Tree Bark and Tree Core nodes were added for the Sawmill, when processing a Tree node, it will split into 1 Core and 4 Barks (which are panel-like).</p>
+<p>This was done to reflect that Tree blocks have 4 sides covered in bark.</p>
+<p>Dust Bins can be placed adjacent to a Sawmill, this will collect any sawdust instead of dropping it at the feet of the player.</p>
+<p>You may notice that Dust Bins can be interacted with by right clicking on them.</p>
+<p>Right clicking with an empty hand will take any Sawdust from it.</p>
+<p>Right clicking with any dust (Sawdust or Metal Dust) will place it in the bin.</p>
+<p>And you read that right, Dust Bins will also accept Metal Dust, but for now just keep sawdust in it.</p>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Screenshots</h3>
+<div>
+  <img alt="Woodcraft Overview" src="/screenshots/posts/2019/11/08/woodcraft-updated/overview.png">
+</div>
+
+<div>
+  <img alt="Some new Nodes" src="/screenshots/posts/2019/11/08/woodcraft-updated/some_new_nodes.png">
+</div>
+
+<div>
+  <img alt="Dust Bin with Sawdust" src="/screenshots/posts/2019/11/08/woodcraft-updated/dust_bin_with_sawdust.png">
 </div>
