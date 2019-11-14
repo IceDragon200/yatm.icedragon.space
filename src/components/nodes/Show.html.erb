@@ -14,7 +14,7 @@
 		<div class="content">
 			<div>
 				<div class="ma3 dib">
-					<% data[:sub_nodes].each do |(node_name, node_data)| %>
+					<% data[:sub_nodes].sort_by { |(_node_name, node_data)| node_data[:display_name] }.each do |(node_name, node_data)| %>
 						<div class="focus-container mb2" tabindex="1">
 						  <div class="dib" style="line-height: 0;">
 								<img src="<%= import_asset('atlas:/images/nodes/' + node_data[:mod_name] + '/' + node_data[:name] + '/x4.gif') %>" />

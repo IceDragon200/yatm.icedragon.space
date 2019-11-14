@@ -78,6 +78,74 @@
 					</ul>
 				</div>
 			<% end %>
+
+			<% unless data[:craftitems_by_basename].empty? %>
+				<div class="Craftitems">
+					<h3 class="bg0 fg1 ph3 pv2">Craft Items</h3>
+					<ul>
+						<% data[:craftitems_by_basename].keys.sort_by do |name|
+							craftitems = data[:craftitems_by_basename][name]
+							(_, craftitem_data) = craftitems.first
+							craftitem_data["base_description"] || craftitem_data["description"] || name
+						end.each do |name|
+							craftitem_mod, craftitem_basename = name.split(":")
+
+						  display_name = name
+						  data[:craftitems_by_basename][name].each do |(craftitem_name, craftitem_data)|
+						  	if craftitem_data["base_description"] then
+						  		display_name = craftitem_data["base_description"]
+						  		break
+						  	end
+
+						  	if craftitem_data["description"] then
+						  		display_name = craftitem_data["description"]
+						  		break
+						  	end
+						  end
+
+							#_craftitem_data = data[:craftitems][craftitem_basename]
+							%>
+							<li>
+								<a href="/craftitems/<%= craftitem_mod %>/<%= craftitem_basename %>"><%= display_name %></a>
+							</li>
+						<% end %>
+					</ul>
+				</div>
+			<% end %>
+
+			<% unless data[:tools_by_basename].empty? %>
+				<div class="Tools">
+					<h3 class="bg0 fg1 ph3 pv2">Tools</h3>
+					<ul>
+						<% data[:tools_by_basename].keys.sort_by do |name|
+							tools = data[:tools_by_basename][name]
+							(_, tool_data) = tools.first
+							tool_data["base_description"] || tool_data["description"] || name
+						end.each do |name|
+							tool_mod, tool_basename = name.split(":")
+
+						  display_name = name
+						  data[:tools_by_basename][name].each do |(tool_name, tool_data)|
+						  	if tool_data["base_description"] then
+						  		display_name = tool_data["base_description"]
+						  		break
+						  	end
+
+						  	if tool_data["description"] then
+						  		display_name = tool_data["description"]
+						  		break
+						  	end
+						  end
+
+							#_tool_data = data[:tools][tool_basename]
+							%>
+							<li>
+								<a href="/tools/<%= tool_mod %>/<%= tool_basename %>"><%= display_name %></a>
+							</li>
+						<% end %>
+					</ul>
+				</div>
+			<% end %>
 		</div>
 	</div>
 </section>

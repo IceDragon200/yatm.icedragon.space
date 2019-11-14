@@ -2,15 +2,18 @@
 <html>
 <head>
   <title><%= data[:title] %></title>
-  <link href="https://fonts.googleapis.com/css?family=Barlow" rel="stylesheet" />
-	<link href="<%= import_asset('@:/css/normalize.css') %>" rel="stylesheet" />
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <link href="https://fonts.googleapis.com/css?family=Barlow:400,700&display=swap" rel="stylesheet">
+	<link href="<%= import_asset('@:/css/tachyons.css') %>" rel="stylesheet" />
 	<link href="<%= import_asset('@:/css/main.css') %>" rel="stylesheet" />
 </head>
 
 <body <%= data[:embedded] ? 'class="embedded"' : '' %> >
 	<% unless data[:embedded] %>
 	<header>
-		<h1 class="bg0 ph3 pv2">
+		<h1 class="bg0 ph3 pv2 f1">
 			<a class="fg1" href="/">
 				<img width="32px" height="32px" alt="Mod Logo" src="<%= import_asset('@:/images/logo_white.png') %>" >
 				<%= data[:title] %>
@@ -26,8 +29,11 @@
 			<a class="<%= data[:path].start_with?('/nodes') ? 'active' : '' %>" href="/nodes">Nodes</a>
 			<a class="<%= data[:path].start_with?('/tutorials') ? 'active' : '' %>" href="/tutorials">Tutorials</a>
 			<a class="<%= data[:path].start_with?('/downloads') ? 'active' : '' %>" href="/downloads">Downloads</a>
+			<a class="<%= data[:path].start_with?('/website') ? 'active' : '' %>" href="/website">Website</a>
 		</nav>
 
+		<!--
+			This... causes problems on mobile, I'll restore it later if I feel like it.
 		<a href="https://github.com/IceDragon200/mt-yatm">
 			<img width="149"
 					 height="149"
@@ -35,7 +41,7 @@
 					 class="attachment-full size-full"
 					 alt="Fork me on GitHub"
 					 data-recalc-dims="1" >
-		</a>
+		</a>-->
 	</header>
 	<% end %>
 	<main>

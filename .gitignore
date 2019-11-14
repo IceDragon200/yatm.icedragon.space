@@ -5,3 +5,4 @@
 /deploy-screenshots.sh
 /watch.sh
 *.erb.cache
+/_data

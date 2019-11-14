@@ -3,11 +3,16 @@
 		<div class="box ba bw1 flex flex-column mb3">
 			<div class="header">
 				<div class="heading bg0 fg1 ph3 pv2">
-					<h5><%= post[:date].strftime("%Y/%m/%d @ %H:%m %Z") %></h5>
+					<h5><%= post[:date].strftime("%Y/%m/%d @ %H:%M %Z") %></h5>
 					<h2>
 						<a class="fg1" href="<%= post[:path] %>"><%= post[:title] %></a>
 					</h2>
 				</div>
+				<% if post[:icon] %>
+					<div class="fr">
+						<%= component('icon', name: post[:icon]) %>
+					</div>
+				<% end %>
 			</div>
 
 			<div class="content ph3 pv2">

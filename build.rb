@@ -1,5 +1,5 @@
 #!/usr/bin/env ruby
-require 'toml'
+require 'toml-rb'
 require 'redcarpet'
 require 'json'
 require 'yaml'
@@ -121,24 +121,27 @@ class Application
     File.write(filename, result)
   end
 
+  def cache_toml_file(filename, json_basename)
+    mtime = File.stat(filename).mtime
+
+    json_filename = File.join(@temp_dir, json_basename % mtime)
+    if File.exist?(json_filename)
+      puts "Loading cached data from JSON"
+      JSON.load(File.read(json_filename))
+    else
+      puts "Loading TOML '#{filename}' and caching as JSON"
+      data = TomlRB.load_file(filename)
+      FileUtils.mkdir_p(File.dirname(json_filename))
+      File.write(json_filename, JSON.dump(data))
+      data
+    end
+  end
+
   def build_nodes_pages
     nodes_dir = File.join(@dist_dir, 'nodes')
 
     exported_nodes_filename = ENV.fetch('YATM_EXPORTED_NODES_FILENAME')
-    mtime = File.stat(exported_nodes_filename).mtime
-
-    json_filename = File.join(@temp_dir, "yatm_exported_nodes-#{mtime}.json")
-    @nodes =
-      if File.exist?(json_filename)
-        puts "Loading cached Node data from JSON"
-        JSON.load(File.read(json_filename))
-      else
-        puts "Loading Node data from TOML and caching"
-        data = TOML.load_file(exported_nodes_filename)
-        FileUtils.mkdir_p(File.dirname(json_filename))
-        File.write(json_filename, JSON.dump(data))
-        data
-      end
+    @nodes = cache_toml_file(exported_nodes_filename, 'yatm_exported_nodes-%d.json')
 
     @nodes_by_basename = {}
     @nodes.each_with_object(@nodes_by_basename) do |(node_name, node_data), acc|
@@ -173,12 +176,12 @@ class Application
       display_name = name
       nodes.each do |(node_name, node_data)|
         if node_data["base_description"] then
-          display_name = node_data["base_description"]
+          display_name = node_data["base_description"].split("\n").first
           break
         end
 
         if node_data["description"] then
-          display_name = node_data["description"]
+          display_name = node_data["description"].split("\n").first
           break
         end
       end
@@ -201,7 +204,7 @@ class Application
               tiles: node_data["tiles"],
               drawtype: node_data["drawtype"],
               node_box: node_data["node_box"],
-              display_name: node_data["description"] || name,
+              display_name: node_data["description"].split("\n").first || name,
             }
           end
         }
@@ -226,20 +229,7 @@ class Application
     craftitems_dir = File.join(@dist_dir, 'craftitems')
 
     exported_craftitems_filename = ENV.fetch('YATM_EXPORTED_CRAFTITEMS_FILENAME')
-    mtime = File.stat(exported_craftitems_filename).mtime
-
-    json_filename = File.join(@temp_dir, "yatm_exported_craftitems-#{mtime}.json")
-    @craftitems =
-      if File.exist?(json_filename)
-        puts "Loading cached Craftitems data from JSON"
-        JSON.load(File.read(json_filename))
-      else
-        puts "Loading Craftitems data from TOML and caching"
-        data = TOML.load_file(exported_craftitems_filename)
-        FileUtils.mkdir_p(File.dirname(json_filename))
-        File.write(json_filename, JSON.dump(data))
-        data
-      end
+    @craftitems = cache_toml_file(exported_craftitems_filename, 'yatm_exported_craftitems-%d.json')
 
     @craftitems_by_basename = {}
     @craftitems.each_with_object(@craftitems_by_basename) do |(craftitem_name, craftitem_data), acc|
@@ -325,20 +315,7 @@ class Application
     tools_dir = File.join(@dist_dir, 'tools')
 
     exported_tools_filename = ENV.fetch('YATM_EXPORTED_TOOLS_FILENAME')
-    mtime = File.stat(exported_tools_filename).mtime
-
-    json_filename = File.join(@temp_dir, "yatm_exported_tools-#{mtime}.json")
-    @tools =
-      if File.exist?(json_filename)
-        puts "Loading cached Tools data from JSON"
-        JSON.load(File.read(json_filename))
-      else
-        puts "Loading Tools data from TOML and caching"
-        data = TOML.load_file(exported_tools_filename)
-        FileUtils.mkdir_p(File.dirname(json_filename))
-        File.write(json_filename, JSON.dump(data))
-        data
-      end
+    @tools = cache_toml_file(exported_tools_filename, 'yatm_exported_tools-%d.json')
 
     @tools_by_basename = {}
     @tools.each_with_object(@tools_by_basename) do |(tool_name, tool_data), acc|
@@ -437,8 +414,15 @@ class Application
         mods: @mods,
         name: mod_name,
         mod_conf: mod_conf,
+
         nodes: @nodes_by_mod[mod_name] || {},
-        nodes_by_basename: @mod_nodes_by_basename[mod_name] || {}
+        nodes_by_basename: @mod_nodes_by_basename[mod_name] || {},
+
+        craftitems: @craftitems_by_mod[mod_name] || {},
+        craftitems_by_basename: @mod_craftitems_by_basename[mod_name] || {},
+
+        tools: @tools_by_mod[mod_name] || {},
+        tools_by_basename: @mod_tools_by_basename[mod_name] || {}
       )
     end
 
@@ -560,6 +544,13 @@ class Application
     render_component_to_file(File.join(@dist_dir, 'downloads/index.html'), "downloads/Index",
       "YATM / Downloads",
       path: '/downloads'
+    )
+  end
+
+  def build_website_pages
+    render_component_to_file(File.join(@dist_dir, 'website/index.html'), "website/Index",
+      "YATM / Website",
+      path: '/website'
     )
   end
 
@@ -702,6 +693,7 @@ class Application
     build_tutorials_pages()
     build_mod_pages()
     build_download_pages()
+    build_website_pages()
     build_error_pages()
 
     handle_assets()

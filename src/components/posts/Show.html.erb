@@ -2,9 +2,17 @@
 	<div class="box ba bw1 flex flex-column flex-auto">
 		<div class="header">
 			<div class="heading bg0 fg1 ph3 pv2">
-				<h5><%= data[:post][:date].strftime("%Y/%m/%d @ %H:%m %Z") %></h5>
-				<h2><%= data[:post][:title] %></h2>
+				<h5><%= data[:post][:date].strftime("%Y/%m/%d @ %H:%M %Z") %></h5>
+				<h2>
+					<a class="fg1" href="<%= data[:post][:path] %>"><%= data[:post][:title] %></a>
+				</h2>
 			</div>
+
+			<% if data[:post][:icon] %>
+				<div class="fr">
+					<%= component('icon', name: data[:post][:icon]) %>
+				</div>
+			<% end %>
 		</div>
 
 		<div class="contents ph3 pv2">
