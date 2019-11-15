@@ -1,0 +1,32 @@
+<%
+  data[:post][:title] = "YATM Mail Update!"
+  data[:post][:date] = Time.parse("2019-11-14T23:45:00Z")
+  data[:post][:summary] = "Your package has arrived."
+  data[:post][:icon] = "wooden-sign"
+
+  render_node = proc do |name|
+    component("nodes/Show", minimal: true, **data[:nodes_basename_state][name])
+  end
+
+  render_craftitem = proc do |name|
+    component("craftitems/Show", minimal: true, **data[:craftitems_basename_state][name])
+  end
+%>
+
+<p>Your package has arrived.</p>
+
+<p>
+	This update brings the YATM Mail package node,
+  a container similar to the cardboard box, but without the item interface.
+  Addressable to anything or anyone.
+
+  You can toss into a mailbox along with any items and it will remember them all!
+</p>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
+<div>
+  <%= render_node.("yatm_mail:mailbox_wood") %>
+  <%= render_node.("yatm_mail:mailbox_metal") %>
+  <%= render_node.("yatm_mail:package") %>
+  <%= render_node.("yatm_mail:package_with_ribbon") %>
+</div>
