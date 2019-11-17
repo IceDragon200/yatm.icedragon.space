@@ -1,0 +1,56 @@
+<%
+  data[:post][:title] = "YATM Drones"
+  data[:post][:date] = Time.parse("2019-11-16T22:00:00Z")
+  data[:post][:summary] = "A little helper to pick up fallen items."
+  data[:post][:icon] = "wooden-sign"
+
+  render_node = proc do |name|
+    component("nodes/Show", minimal: true, **data[:nodes_basename_state][name])
+  end
+
+  render_tool = proc do |name|
+    component("tools/Show", minimal: true, **data[:tools_basename_state][name])
+  end
+%>
+
+<p>A little helper to pick up fallen items.</p>
+
+<p>
+	Introducing YATM Drones, an experiment using mobkit to implement a simple drone entity.
+
+  It will randomly wander around and pick up item entities.
+
+  That's all.
+
+  Oh, it also seems to be fond of trees, I have no idea why.
+</p>
+
+<p>To get started:</p>
+<ol>
+  <li>Place a <b>Scavenger Docking Station</b>, and be sure to power it!</li>
+  <li>
+    <p>Next, grab a <b>Scavenger Drone Case</b> and deploy the drone with a right click.</p>
+    <p>The drone should immediately rush over to the docking station to charge up fully.</p>
+    <p>Any drone that has its energy level drop below 1000 units, will immediately head for a docking station.</p>
+    <p>Once it's fully charged it will move around idling.</p>
+  </li>
+  <li>Feel free to drop items to test its pickup.</li>
+  <li>
+    <p>Next, place a <b>Scavenger Dropoff Station</b>, power it and attach a <b>Cardboard Box</b> adjacent to it.</p>
+    <p>The drone should enter the dropoff station after 15 seconds of being idle, or if its inventory didn't have room for a fallen item.</p>
+  </li>
+</ol>
+
+<b>Expect all kind of odditites with it's behaviour</b>
+<p>The code was thrown together to get a prototype of the drone.</p>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
+<div>
+  <%= render_node.("yatm_drones:scavenger_docking_station") %>
+  <%= render_node.("yatm_drones:scavenger_dropoff_station") %>
+</div>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Tools</h3>
+<div>
+  <%= render_tool.("yatm_drones:scavenger_drone_case") %>
+</div>

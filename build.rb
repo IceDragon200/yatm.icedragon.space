@@ -290,7 +290,7 @@ class Application
               name: subcraftitem_name,
               inventory_image: craftitem_data["inventory_image"],
               craftitem_box: craftitem_data["craftitem_box"],
-              display_name: craftitem_data["description"] || name,
+              display_name: craftitem_data["description"].split("\n").first || name,
             }
           end
         }
@@ -376,7 +376,7 @@ class Application
               name: subtool_name,
               inventory_image: tool_data["inventory_image"],
               tool_box: tool_data["tool_box"],
-              display_name: tool_data["description"] || name,
+              display_name: tool_data["description"].split("\n").first || name,
             }
           end
         }
@@ -618,17 +618,19 @@ class Application
             when /^\/images\/nodes\/(\S+)\/(\S+)\/(\S+)$/
               mod_name = $1
               node_name = $2
-              basename = $3.split("^")[0]
-              key = "#{mod_name}:#{node_name}"
+              if $3
+                basename = $3.split("^")[0]
+                key = "#{mod_name}:#{node_name}"
 
-              unless generated_atlases[key]
-                generated_atlases[key] = true
-                node_data = @nodes_by_mod[mod_name][node_name]
-                AtlasBuilder.build_node_atlas(
-                  mod_name, node_name, node_data,
-                  File.join(@temp_dir, "/assets/images/nodes/"),
-                  File.join(@temp_dir, "/tmp/assets/images/nodes/")
-                )
+                unless generated_atlases[key]
+                  generated_atlases[key] = true
+                  node_data = @nodes_by_mod[mod_name][node_name]
+                  AtlasBuilder.build_node_atlas(
+                    mod_name, node_name, node_data,
+                    File.join(@temp_dir, "/assets/images/nodes/"),
+                    File.join(@temp_dir, "/tmp/assets/images/nodes/")
+                  )
+                end
               end
             end
 
