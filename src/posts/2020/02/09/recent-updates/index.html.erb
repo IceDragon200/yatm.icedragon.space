@@ -1,0 +1,260 @@
+<%
+  data[:post][:title] = "Recent Updates!"
+  data[:post][:date] = Time.parse("2020-02-09T12:00:00Z")
+  data[:post][:summary] = "What's the latest with YATM."
+  data[:post][:icon] = "wooden-sign"
+
+  render_node = proc do |name|
+    component("nodes/Show", minimal: true, **data[:nodes_basename_state].fetch(name))
+  end
+
+  render_tool = proc do |name|
+    component("tools/Show", minimal: true, **data[:tools_basename_state].fetch(name))
+  end
+
+  render_craftitem = proc do |name|
+    component("craftitems/Show", minimal: true, **data[:craftitems_basename_state].fetch(name))
+  end
+%>
+
+<p>
+  Hello, and welcome back to another post on YATM.
+
+  There is a lot to cover, and because I'm lazy, there will be no screenhots this round.
+
+  For now at least.
+
+  Since I forgot to note the changes down, I'll be going by the github changelog and explain everything that's happened since the Big Data Update.
+</p>
+
+<b>New Formspec backgrounds</b>
+<p>
+  YATM has a slew of new formspec backgrounds, comes in 2 different formats to support older clients that didn't have 9-slice background support.
+
+  Granted it works sometimes, and other times it straight up shows a black background, I have no idea why.
+</p>
+
+<b>Data to Mesecon bugfix</b>
+<p>
+  The Data to Mesecon node had a serious bug where it would emit a data event.
+
+  For those who don't know what this node does, it takes a data event and then outputs a mesecon signal.
+
+  That's it, it shouldn't be emitting data.
+</p>
+<div>
+  <%= render_node.("yatm_data_to_mesecon:data_to_mesecon") %>
+</div>
+
+<b>Data Frame Motors are now implemented</b>
+<p>
+  While the motors existed from the beginning, they couldn't actually be operated since the data network system wasn't implemented yet.
+
+  But that has changed, Data Frame Motors can now be operated!
+</p>
+<div>
+  <%= render_node.("yatm_frames:frame_motor_data") %>
+</div>
+
+<b>Machines can now use a function for their capacity</b>
+<p>
+  More of a development side thing, even machine using the 'devices' API can now specify a function that returns their energy capacity.
+</p>
+
+<b>Thermal code gets a slight revamp</b>
+<p>
+  While still a glorious WIP, the thermal system has seen a quick revisit, and nodes that use the system have also seen a slight revamp as well.
+</p>
+<p>
+  Heat spreads over thermal ducts, and unlike energy, it isn't 'consumed', but rather just used until the source is unable to keep the duct heated.
+</p>
+<div>
+  <%= render_node.("yatm_cluster_thermal:thermal_duct") %>
+  <%= render_node.("yatm_cluster_thermal:thermal_node") %>
+</div>
+
+<b>Codex has it's first few entries and demos!</b>
+<p>
+  The CODEX has seen some work, and while it's interface is still atrociously bad, it has begun accomplishing it's intended task:
+
+  <i>Providing much needed documentation pages on various YATM nodes!</i>
+</p>
+<div>
+  <%= render_tool.("yatm_codex:codex") %>
+  <%= render_tool.("yatm_codex:codex_deploy") %>
+</div>
+
+<b>Quarry walls no longer drop quarries when broken</b>
+<p>
+  A rather interesting copy-paste mistake, Quarry walls when broken, would drop Quarries instead of the wall.
+</p>
+<div>
+  <%= render_node.("yatm_mining:quarry_wall") %>
+</div>
+
+<b>Reactors now send a chat message to the player that started it</b>
+<p>
+  Debugging a misbehaving reactor is hard, so with a bit of help, reactors will now send a message to the player that started or stopped it providing some feedback.
+</p>
+<p>
+  More improvements are needed in this department however.
+</p>
+
+<b>Reactors replacing nodes on start/stop</b>
+<p>
+  A rather terrible bug was found where a reactor would incorrectly replace nodes when started or stopped, this was due to a stale node record stored in the reactor cluster.
+</p>
+<p>
+  Since this bug could potentially plague other systems, YATM now pulls the latest node information when necessary instead of relying on it's stale record.
+</p>
+<p>
+  The stale record is kept mostly for debugging and for cases where the original node cannot be accessed (i.e. the block is unloaded)
+</p>
+
+<b>DSCS takes it's first baby steps with working drives.</b>
+<p>
+  So the DSCS can now store items in it's drives, fluids are still a work in progress and the elemental system is no where in sight!
+</p>
+<p>
+  It's still buggy and may lose items, plus the format is still in flux.
+</p>
+<p>
+  With semi-working drives in place, 2 new nodes were added as well, the Materializer and Digitizer, these nodes will take or add items/fluids/anything-else to or remove from the DSCS system respectively.
+</p>
+<div>
+  <%= render_node.("yatm_dscs:drive_case") %>
+  <%= render_node.("yatm_dscs:digitizer") %>
+  <%= render_node.("yatm_dscs:materializer") %>
+</div>
+
+<b>Load and Unload hooks for nodes in clusters</b>
+<p>
+  One issue encountered in the DSCS system was the loading and unloading of nodes with externally controlled resoucres (i.e. Fluid Inventories for drives).
+</p>
+<p>
+  The cluster system will now call a node's unload or load hook in it's specified network or system.
+</p>
+<p>
+  Granted, I have encountered cases where the unload isn't called when I expected it, but some time after.
+
+  This is due to the block unloading code being a bit slow to act.
+</p>
+
+<b>Energy cells finally have their correct animation</b>
+<p>
+  Did you know, energy cells were suppose to have a pulsing animation? No? Well they were, but due to some... issues, they were played straight instead of ping-pong, this has been finally rectified.
+</p>
+<div>
+  <%= render_node.("yatm_energy_storage:energy_cell_basic") %>
+  <%= render_node.("yatm_energy_storage:energy_cell_normal") %>
+  <%= render_node.("yatm_energy_storage:energy_cell_dense") %>
+
+  <%= render_node.("yatm_energy_storage:energy_cell_basic_creative") %>
+  <%= render_node.("yatm_energy_storage:energy_cell_normal_creative") %>
+  <%= render_node.("yatm_energy_storage:energy_cell_dense_creative") %>
+</div>
+
+<b>Devices Cluster is now uses Simple Cluster implementation</b>
+<p>
+  A bit of code refactoring, the devices cluster was a special snowflake due to it's additional requirements of changing some nodes depending on an overall controller state.
+
+  It still maintains it's special status, but with less code now, as it has been refactored to work with the Simple Cluster base system, so no more odd bugs between the different implementations.
+</p>
+
+<b>New Carbon Steel nodes</b>
+<p>
+  Being badgered again to add more carbon steel textures, I have recycled the machine panels to provide new variants.
+</p>
+<div>
+  <%= render_node.("yatm_foundry:carbon_steel_base_panel_block") %>
+  <%= render_node.("yatm_foundry:carbon_steel_plain_panel_block") %>
+  <%= render_node.("yatm_foundry:carbon_steel_smooth_block") %>
+</div>
+
+<b>Mesecon Locks have new textures</b>
+<p>
+  To say the least, I despised the old textures, and I still despise the new ones.
+</p>
+<p>
+  I'm just not sure how I want them to look...
+</p>
+<div>
+  <%= render_node.("yatm_mesecon_locks:mesecon_lock") %>
+</div>
+
+<b>ICBMs</b>
+<p>
+  YATM Armoury has seen a new module, the ICBM module, while seriously a WIP, it combines the destructive nature of the Armoury module with the control systems from data to unleash a block of metal on your enemies.
+</p>
+<p>
+  If you do manage to launch an ICBM, don't expect an explosion, but at least expect a hilariously bad flight code.
+</p>
+<div>
+  <%= render_node.("yatm_armoury_icbm:icbm_silo") %>
+  <%= render_node.("yatm_armoury_icbm:icbm_guiding_ring") %>
+  <%= render_node.("yatm_armoury_icbm:icbm_guiding_ring_single") %>
+  <%= render_node.("yatm_armoury_icbm:icbm_guiding_ring_warning_strips") %>
+  <%= render_node.("yatm_armoury_icbm:icbm_guiding_ring_single_warning_strips") %>
+</div>
+
+<b>Data Control Plane</b>
+<p>
+  A challenge poised by the ICBM was the need to set multiple variables over the data interface.
+</p>
+<p>
+  While this could be somewhat accomplished easily by the computers (eh em, they still aren't implemented fully), there needed to be a stop gap in the meantime.
+</p>
+<p>
+  The control plane allows players to install various components into the node and then attach the usual data configurations to each component, so you can trigger multiple data events in the same node.
+</p>
+<div>
+  <%= render_node.("yatm_data_control:data_control_plane") %>
+  <%= render_craftitem.("yatm_data_control:control_button") %>
+  <%= render_craftitem.("yatm_data_control:control_switch") %>
+</div>
+
+<b>Plenty of new Motor Frames</b>
+<p>
+  Motor frames now have more frame variants, and wire frames finally do something.
+</p>
+<p>
+  Motor frames come in variants of 1-6 faces with sticky or wired or both.
+</p>
+<div>
+  <%= render_node.("yatm_frames:frame_sticky") %>
+  <%= render_node.("yatm_frames:frame_sticky_axle") %>
+  <%= render_node.("yatm_frames:frame_sticky_cross_axle") %>
+  <%= render_node.("yatm_frames:frame_sticky_five") %>
+  <%= render_node.("yatm_frames:frame_sticky_four") %>
+  <%= render_node.("yatm_frames:frame_sticky_one") %>
+  <%= render_node.("yatm_frames:frame_sticky_three") %>
+  <%= render_node.("yatm_frames:frame_sticky_two") %>
+  <%= render_node.("yatm_frames:frame_wire") %>
+  <%= render_node.("yatm_frames:frame_wire_one") %>
+  <%= render_node.("yatm_frames:frame_wire_and_sticky_axle") %>
+  <%= render_node.("yatm_frames:frame_wire_and_sticky_cross_axle_1") %>
+  <%= render_node.("yatm_frames:frame_wire_and_sticky_cross_axle_2") %>
+  <%= render_node.("yatm_frames:frame_wire_axle") %>
+</div>
+
+<b>Wall Mounted Data Cables</b>
+<p>
+  Placing cables on the ground gets boring after a while, sometimes you want to place them on the wall, but due to their implementation, they couldn't be rotated to lay flat on the wall, leading some some... horrendous looking connections.
+</p>
+<p>
+  As of such, and painfully as such, a set of new cables were added that can be manually rotated, regular cables will continue to exist.
+</p>
+<p>
+  Don't mind the textures if they all look the same, in minetest the cables have different models, so parts of the texture are omitted.
+</p>
+<div>
+  <%= render_node.("yatm_data_network:data_cable_bus_bracket_straight") %>
+  <%= render_node.("yatm_data_network:data_cable_bus_bracket_corner") %>
+  <%= render_node.("yatm_data_network:data_cable_bus_bracket_tee") %>
+  <%= render_node.("yatm_data_network:data_cable_bus_bracket_cross") %>
+  <%= render_node.("yatm_data_network:data_cable_bracket_corner") %>
+  <%= render_node.("yatm_data_network:data_cable_bracket_straight") %>
+  <%= render_node.("yatm_data_network:data_cable_bracket_cross") %>
+  <%= render_node.("yatm_data_network:data_cable_bracket_riser") %>
+  <%= render_node.("yatm_data_network:data_cable_bracket_tee") %>
+</div>
