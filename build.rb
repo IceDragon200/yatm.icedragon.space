@@ -420,7 +420,9 @@ class Application
   def build_mod_pages
     @mods = {}
     mod_confs = []
-    Dir.glob("/home/icy/docs/codes/IceDragon/minetest-mods/yatm/**/mod.conf").each do |mod_conf_filename|
+
+    (Dir.glob("#{ENV['HARMONIA_MODPACK_PATH']}/**/mod.conf") +
+    Dir.glob("#{ENV['YATM_MODPACK_PATH']}/**/mod.conf")).each do |mod_conf_filename|
       mod_conf = ModConf.load_file(mod_conf_filename)
 
       name = mod_conf['name']
