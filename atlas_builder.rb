@@ -1,6 +1,6 @@
 require 'minil'
 require 'fileutils'
-require_relative '../../resources/compose_context'
+require_relative '../resources/compose_context'
 require 'dragontk/thread_pool'
 
 module AtlasBuilder
