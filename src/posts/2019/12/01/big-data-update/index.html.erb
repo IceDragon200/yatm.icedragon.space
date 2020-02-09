@@ -1,0 +1,304 @@
+<%
+  data[:post][:title] = "Big Data Update!"
+  data[:post][:date] = Time.parse("2019-12-01T20:30:00Z")
+  data[:post][:summary] = "With so many changes, it's hard to keep track."
+  data[:post][:icon] = "wooden-sign"
+
+  render_node = proc do |name|
+    component("nodes/Show", minimal: true, **data[:nodes_basename_state][name])
+  end
+
+  render_tool = proc do |name|
+    component("tools/Show", minimal: true, **data[:tools_basename_state][name])
+  end
+
+  render_craftitem = proc do |name|
+    component("craftitems/Show", minimal: true, **data[:craftitems_basename_state][name])
+  end
+%>
+
+<p>With so many changes, it's hard to keep track.</p>
+
+<p>
+  While the title is says 'data', quite a few new features have been added!
+
+  But mostly in the yatm_data department.
+
+  But let's start off with something smaller.
+</p>
+
+<div>
+  <h3>Papercraft</h3>
+  <p>
+    Papercraft has been a long neglected module, right there with Woodcraft.
+
+    For some time now it's 'shoji' node files have remained empty.
+
+    But not anymore, while the doors haven't been created as of yet, panels have been added!
+  </p>
+
+  <h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
+  <div>
+    <%= render_node.("yatm_papercraft:shoji_panel") %>
+    <%= render_node.("yatm_papercraft:shoji_panel_block") %>
+  </div>
+</div>
+
+<div>
+  <h3>Mesecon Sequencer</h3>
+  <p>
+    Ever built a delayer sequencer?
+
+    That is several delayers linked together to form a loop.
+  </p>
+
+  <p>Yes? Cool!</p>
+
+  <p>Ever had it suddenly lock up on you, as in, all the nodes are lit so the cycle stops?</p>
+
+  <p>No? Lucky you.</p>
+
+  <p>I wasn't so lucky, this rather boring node aims to solve that problem by bringing the entire sequence down into a single node that is self managed.</p>
+
+  <h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
+  <div>
+    <%= render_node.("yatm_mesecon_sequencer:sequencer") %>
+  </div>
+</div>
+
+<div>
+  <h3>Array Energy</h3>
+  <p>
+    Energy cells are great and all, but sometimes you really just want to store the energy and have a SINGLE point of access to aggregate the cells.
+  </p>
+
+  <p>
+    Well, say hello to the Array Energy Cell and Array Energy Controller.
+  </p>
+
+  <p>
+    Array Energy Cells are new nodes that don't implement the energy interface.
+  </p>
+
+  <p>
+    <quote>"So, is it a energy device, or what?"</quote>, I hear you scream at your screen.
+  </p>
+
+  <p>
+    Yes and no, it does implement the energy interface, but it doesn't register itself as an energy device.
+
+    That only means you can't use it directly to power your device networks.
+  </p>
+
+  <p>
+    An Array Energy Controller is a normal device through and through.
+  </p>
+
+  <p>
+    The controller is used to manage those Array Cells.
+
+    This allows you to charge/discharge or measure all the array cells as if it were only 1 node.
+  </p>
+
+  <p>
+    Now that is all well and good, but why?
+  </p>
+
+  <p>The simple answer, <i>monitoring.</i></p>
+
+  <p>
+    While YATM normally doesn't care too much about the topology of a network,
+    it does become an issue when you want to aggregate stored energy at a glance.
+  </p>
+
+  <p>
+    This arose as I wanted to eventually add an energy monitoring data node.
+  </p>
+
+  <p>Of course, if you just want energy, there is a creative cell available.</p>
+
+  <h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
+  <div>
+    <%= render_node.("yatm_energy_storage_array:array_energy_cell_creative") %>
+    <%= render_node.("yatm_energy_storage_array:array_energy_cell") %>
+    <%= render_node.("yatm_energy_storage_array:array_energy_controller") %>
+  </div>
+</div>
+
+<div>
+  <h3>Creative Engine</h3>
+  <p>
+    Energy generation comes in a few flavours...
+  </p>
+
+  <ul>
+    <li>There is the combustion engine which consumes various oils.</li>
+    <li>Solar panels.</li>
+    <li>And... the coal generator.</li>
+  </ul>
+
+  <p>
+    All of which require 'something' to produce energy.
+  </p>
+
+  <p>
+    If you have to test energy storage, or anything that WANTS some energy not already stored, you used to have to work for it.
+  </p>
+
+  <i>Used to</i>
+
+  <p>
+    I've tweaked the combustion engine's texture a bit and created the creative engine.
+
+    It generates <b>4096 units of energy per second</b>, more than enough for any application.
+  </p>
+
+  <small>And if for some reason you need more than that, just use more engines</small>
+
+  <h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
+  <div>
+    <%= render_node.("yatm_machines:creative_engine") %>
+  </div>
+</div>
+
+<div>
+  <h3>Drone Upgrades</h3>
+  <p>
+    Drones were revisited briefly with the introduction of upgrades.
+
+    For now they aren't all that impressive.
+
+    An upgrade for speed, jump and item vacuum capabilities.
+
+    Speed allows drones to move faster, jump increases jump height (why are drones jumping again?), and vacuum increases the item pickup range.
+  </p>
+  <h3 class="bg0 fg1 ph3 pv2 mb3">Craft-items</h3>
+  <div>
+    <%= render_craftitem.("yatm_drones:drone_upgrade") %>
+  </div>
+</div>
+
+<div>
+  <h3>YATM Data & Related</h3>
+  <p>And now for the biggest changes of all.</p>
+  <p>
+    YATM Mail has lost it's Locksmith table, Keys and Locks, YATM Mesecon Card Reader has lost it's data related readers and the access cards.
+
+    But don't worry they aren't gone, simply moved to new mods.
+  </p>
+
+  <h3 class="bg0 fg1 ph3 pv2 mb3">Moved Nodes</h3>
+  <div>
+    <%= render_node.("yatm_security:locksmiths_table") %>
+
+    <%= render_node.("yatm_mesecon_card_readers:mesecon_card_reader") %>
+    <%= render_node.("yatm_mesecon_card_readers:mesecon_card_swiper") %>
+
+    <%= render_node.("yatm_data_card_readers:data_card_reader") %>
+    <%= render_node.("yatm_data_card_readers:data_card_swiper") %>
+  </div>
+
+  <h3 class="bg0 fg1 ph3 pv2 mb3">Moved Craft-items</h3>
+  <div>
+    <%= render_craftitem.("yatm_security:access_card") %>
+    <%= render_craftitem.("yatm_security:access_chip") %>
+    <%= render_craftitem.("yatm_security:access_chip_with_pins") %>
+    <%= render_craftitem.("yatm_security:lock_carbon_steel") %>
+  </div>
+
+  <p>
+    So that should cover all the moved items.
+  </p>
+
+  <p>
+    Unto more impressive matters.
+
+    Data has seen something of an overhaul and update with a slew of new nodes.
+  </p>
+  <p>
+    <b>All which actually work this time.</b>
+    Except for the Memory module, which I haven't figured out what the best interface would be for it.
+  </p>
+
+  <p>
+    <i>Take that computers!</i> <small>I promise I'll work on them soon...</small>
+  </p>
+
+  <h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
+  <div>
+    <%= render_node.("yatm_data_logic:data_arith") %>
+    <%= render_node.("yatm_data_logic:data_buffer") %>
+    <%= render_node.("yatm_data_logic:data_clock") %>
+    <%= render_node.("yatm_data_logic:data_comparator") %>
+    <%= render_node.("yatm_data_logic:data_decoder") %>
+    <%= render_node.("yatm_data_logic:data_memory") %>
+    <%= render_node.("yatm_data_logic:data_momentary_button") %>
+    <%= render_node.("yatm_data_logic:data_pulser") %>
+    <%= render_node.("yatm_data_logic:data_sequencer") %>
+    <%= render_node.("yatm_data_logic:data_toggle_button") %>
+
+    <%= render_node.("yatm_data_display:ascii_display") %>
+
+    <%= render_node.("yatm_data_noteblock:data_noteblock") %>
+    <%= render_node.("yatm_security:programmers_table") %>
+  </div>
+
+  <h3 class="bg0 fg1 ph3 pv2 mb3">Tools</h3>
+  <div>
+    <%= render_tool.("yatm_data_logic:data_programmer") %>
+  </div>
+
+  <p>
+    If you've noticed, all data related nodes now have a magenta strip or coloration somewhere on it's frame.
+
+    This is used to aid with identifying them.
+  </p>
+</div>
+
+<div>
+  <h3>YATM Data & Mesecon</h3>
+  <p>
+    I love mesecon, but sometimes, I want to do something: odd, weird, out of the way, or you know, just batshit, because I can.
+
+    That gave birth to the data nodes.
+  </p>
+
+  <p>
+    But sometimes I need to go from data to the simple life of mesecon or back.
+
+    As of such, 2 additional nodes were created for converting from and to mesecon and data.
+  </p>
+
+  <h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
+  <div>
+    <%= render_node.("yatm_data_to_mesecon:data_to_mesecon") %>
+    <%= render_node.("yatm_data_to_mesecon:mesecon_to_data") %>
+  </div>
+
+  <p>
+    The names are not final.
+
+    Naming is one of the hardest things afterall.
+  </p>
+</div>
+
+<h3>So, what's next?</h3>
+<p>
+  Ultimately I want to revisit some of the other modules, and bring them up to being functional.
+</p>
+<ul>
+  <li>Armoury</li>
+  <li>Bees</li>
+  <li>Brewery</li>
+  <li>Thermal</li>
+  <li>Culinary</li>
+  <li>DSCS</li>
+  <li>Computers (OKU)</li>
+  <li>Rails</li>
+  <li>Reactors</li>
+</ul>
+
+<small>Or get distracted and add yet-another-cool-idea</small>
+<p>
+  Possibly a Codex module to allow right-clicking on nodes, entities or items from YATM (or any supported mods) to pull up additional ingame information.
+</p>

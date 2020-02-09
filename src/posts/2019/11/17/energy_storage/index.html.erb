@@ -1,0 +1,50 @@
+<%
+  data[:post][:title] = "YATM Energy Storage"
+  data[:post][:date] = Time.parse("2019-11-17T23:50:00Z")
+  data[:post][:summary] = "Energy storage has it's own mod now."
+  data[:post][:icon] = "wooden-sign"
+
+  render_node = proc do |name|
+    component("nodes/Show", minimal: true, **data[:nodes_basename_state][name])
+  end
+
+  render_tool = proc do |name|
+    component("tools/Show", minimal: true, **data[:tools_basename_state][name])
+  end
+%>
+
+<p>Energy storage has it's own mod now.</p>
+
+<p>
+	With the introduction of drones, a very old node finally found it's purpose.
+
+  The Battery Bank has been updated, moved and reinstated.
+
+  In addition, Energy cells have been moved to the new <a href="/mods/yatm_energy_storage">yatm_energy_storage</a> mod.
+
+  As well as Batteries, they have been changed from craftitems to tools.
+</p>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
+<div>
+  <%= render_node.("yatm_energy_storage:energy_cell_basic") %>
+  <%= render_node.("yatm_energy_storage:energy_cell_normal") %>
+  <%= render_node.("yatm_energy_storage:energy_cell_dense") %>
+  <%= render_node.("yatm_energy_storage:energy_cell_basic_creative") %>
+  <%= render_node.("yatm_energy_storage:energy_cell_normal_creative") %>
+  <%= render_node.("yatm_energy_storage:energy_cell_dense_creative") %>
+</div>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Tools</h3>
+<div>
+  <%= render_tool.("yatm_energy_storage:battery") %>
+</div>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Screenshots</h3>
+<div>
+  <img class="mxw-100" alt="A drone with batteries at work" src="/assets/screenshots/posts/2019/11/17/energy_storage/drone_batteries.png">
+</div>
+
+<div>
+  <img class="mxw-100" alt="A battery bank, charging various batteries" src="/assets/screenshots/posts/2019/11/17/energy_storage/battery_bank.png">
+</div>

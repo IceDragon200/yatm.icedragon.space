@@ -121,7 +121,7 @@ class Application
     File.write(filename, result)
   end
 
-  def cache_toml_file(filename, json_basename)
+  def cache_exported_file(filename, json_basename)
     mtime = File.stat(filename).mtime
 
     json_filename = File.join(@temp_dir, json_basename % mtime)
@@ -129,8 +129,27 @@ class Application
       puts "Loading cached data from JSON"
       JSON.load(File.read(json_filename))
     else
-      puts "Loading TOML '#{filename}' and caching as JSON"
-      data = TomlRB.load_file(filename)
+      data =
+        case File.extname(filename)
+        when '.toml'
+          puts "Loading TOML '#{filename}' and caching as JSON"
+          TomlRB.load_file(filename)
+        when '.mljson'
+          puts "Loading Multiline JSON '#{filename}' and caching as JSON"
+          data = {}
+          File.open(filename, 'r') do |file|
+            file.each_line do |line|
+              if not line.strip.empty?
+                row = JSON.load(line)
+                data[row["name"]] = row
+              end
+            end
+          end
+          data
+        else
+          raise "unexpected filename"
+        end
+
       FileUtils.mkdir_p(File.dirname(json_filename))
       File.write(json_filename, JSON.dump(data))
       data
@@ -141,7 +160,7 @@ class Application
     nodes_dir = File.join(@dist_dir, 'nodes')
 
     exported_nodes_filename = ENV.fetch('YATM_EXPORTED_NODES_FILENAME')
-    @nodes = cache_toml_file(exported_nodes_filename, 'yatm_exported_nodes-%d.json')
+    @nodes = cache_exported_file(exported_nodes_filename, 'yatm_exported_nodes-%d.json')
 
     @nodes_by_basename = {}
     @nodes.each_with_object(@nodes_by_basename) do |(node_name, node_data), acc|
@@ -201,6 +220,7 @@ class Application
               node_name: node_name,
               mod_name: sub_mod_name,
               name: subnode_name,
+              node_data: node_data,
               tiles: node_data["tiles"],
               drawtype: node_data["drawtype"],
               node_box: node_data["node_box"],
@@ -229,7 +249,7 @@ class Application
     craftitems_dir = File.join(@dist_dir, 'craftitems')
 
     exported_craftitems_filename = ENV.fetch('YATM_EXPORTED_CRAFTITEMS_FILENAME')
-    @craftitems = cache_toml_file(exported_craftitems_filename, 'yatm_exported_craftitems-%d.json')
+    @craftitems = cache_exported_file(exported_craftitems_filename, 'yatm_exported_craftitems-%d.json')
 
     @craftitems_by_basename = {}
     @craftitems.each_with_object(@craftitems_by_basename) do |(craftitem_name, craftitem_data), acc|
@@ -263,12 +283,12 @@ class Application
       display_name = name
       craftitems.each do |(craftitem_name, craftitem_data)|
         if craftitem_data["base_description"] then
-          display_name = craftitem_data["base_description"]
+          display_name = craftitem_data["base_description"].split("\n").first
           break
         end
 
         if craftitem_data["description"] then
-          display_name = craftitem_data["description"]
+          display_name = craftitem_data["description"].split("\n").first
           break
         end
       end
@@ -315,7 +335,7 @@ class Application
     tools_dir = File.join(@dist_dir, 'tools')
 
     exported_tools_filename = ENV.fetch('YATM_EXPORTED_TOOLS_FILENAME')
-    @tools = cache_toml_file(exported_tools_filename, 'yatm_exported_tools-%d.json')
+    @tools = cache_exported_file(exported_tools_filename, 'yatm_exported_tools-%d.json')
 
     @tools_by_basename = {}
     @tools.each_with_object(@tools_by_basename) do |(tool_name, tool_data), acc|
@@ -349,12 +369,12 @@ class Application
       display_name = name
       tools.each do |(tool_name, tool_data)|
         if tool_data["base_description"] then
-          display_name = tool_data["base_description"]
+          display_name = tool_data["base_description"].split("\n").first
           break
         end
 
         if tool_data["description"] then
-          display_name = tool_data["description"]
+          display_name = tool_data["description"].split("\n").first
           break
         end
       end

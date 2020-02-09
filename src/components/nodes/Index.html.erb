@@ -18,12 +18,12 @@
 					 display_name = name
 					 data[:nodes_by_basename][name].each do |(node_name, node_data)|
 					 	if node_data["base_description"] then
-					 		display_name = node_data["base_description"]
+					 		display_name = node_data["base_description"].split("\n").first
 					 		break
 					 	end
 
 					 	if node_data["description"] then
-					 		display_name = node_data["description"]
+					 		display_name = node_data["description"].split("\n").first
 					 		break
 					 	end
 					 end

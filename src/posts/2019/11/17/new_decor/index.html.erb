@@ -1,0 +1,33 @@
+<%
+  data[:post][:title] = "New Decor!"
+  data[:post][:date] = Time.parse("2019-11-17T23:45:00Z")
+  data[:post][:summary] = "Handful of new decorative nodes for your next build."
+  data[:post][:icon] = "wooden-sign"
+
+  render_node = proc do |name|
+    component("nodes/Show", minimal: true, **data[:nodes_basename_state][name])
+  end
+%>
+
+<p>Handful of new decorative nodes for your next build.</p>
+
+<p>
+	After being told that there wasn't enough decorative blocks, I've added more.
+
+  This time in a plastic style.
+
+  And with that, <a href="/mods/yatm_plastics">yatm_plastics</a> is now a thing!
+</p>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
+<div>
+  <%= render_node.("yatm_plastics:plastic_panel_plain_block") %>
+  <%= render_node.("yatm_plastics:plastic_panel_notched_block") %>
+  <%= render_node.("yatm_plastics:plastic_panel_hollow_block") %>
+  <%= render_node.("yatm_plastics:plastic_panel_checker_block") %>
+</div>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Screenshots</h3>
+<div>
+  <img class="mxw-100" alt="Plastics showcase" src="/assets/screenshots/posts/2019/11/17/new_decor/plastics.png">
+</div>

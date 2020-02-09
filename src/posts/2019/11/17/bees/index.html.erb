@@ -1,0 +1,36 @@
+<%
+  data[:post][:title] = "YATM Bees Update!"
+  data[:post][:date] = Time.parse("2019-11-17T16:15:00Z")
+  data[:post][:summary] = "Bee hives and comb textures!"
+  data[:post][:icon] = "wooden-sign"
+
+  render_node = proc do |name|
+    component("nodes/Show", minimal: true, **data[:nodes_basename_state][name])
+  end
+
+  render_craftitem = proc do |name|
+    component("craftitems/Show", minimal: true, **data[:craftitems_basename_state][name])
+  end
+%>
+
+<p>Bee hives and comb textures!</p>
+
+<p>
+	This update brings the bee hive node and honey comb textures!
+
+  Also honey drops, for attracting bees in the baitbox.
+</p>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Nodes</h3>
+<div>
+  <%= render_node.("yatm_bees:bee_hive") %>
+</div>
+
+<h3 class="bg0 fg1 ph3 pv2 mb3">Craft-items</h3>
+<div>
+  <%= render_craftitem.("yatm_bees:honey_drop") %>
+  <%= render_craftitem.("yatm_bees:honey_comb") %>
+  <%= render_craftitem.("yatm_bees:synthetic_comb") %>
+  <%= render_craftitem.("yatm_bees:brood_comb") %>
+  <%= render_craftitem.("yatm_bees:synthetic_brood_comb") %>
+</div>

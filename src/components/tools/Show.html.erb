@@ -15,7 +15,7 @@
 			<div>
 				<div class="ma3 dib">
 					<% data[:sub_tools].sort_by { |(_tool_name, tool_data)| tool_data[:display_name] }.each do |(tool_name, tool_data)| %>
-						<div class="focus-container mb2" tabindex="1">
+						<div class="focus-container mb2 dib" tabindex="1">
 						  <div class="dib" style="line-height: 0;">
 								<img src="<%= import_asset('atlas:/images/tools/' + tool_data[:mod_name] + '/' + tool_data[:name] + '/x4.png') %>" />
 							</div>

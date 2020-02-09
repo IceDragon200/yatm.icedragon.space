@@ -18,12 +18,12 @@
 					 display_name = name
 					 data[:tools_by_basename][name].each do |(tool_name, tool_data)|
 					 	if tool_data["base_description"] then
-					 		display_name = tool_data["base_description"]
+					 		display_name = tool_data["base_description"].split("\n").first
 					 		break
 					 	end
 
 					 	if tool_data["description"] then
-					 		display_name = tool_data["description"]
+					 		display_name = tool_data["description"].split("\n").first
 					 		break
 					 	end
 					 end

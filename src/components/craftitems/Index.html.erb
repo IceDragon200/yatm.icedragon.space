@@ -18,12 +18,12 @@
 					 display_name = name
 					 data[:craftitems_by_basename][name].each do |(craftitem_name, craftitem_data)|
 					 	if craftitem_data["base_description"] then
-					 		display_name = craftitem_data["base_description"]
+					 		display_name = craftitem_data["base_description"].split("\n").first
 					 		break
 					 	end
 
 					 	if craftitem_data["description"] then
-					 		display_name = craftitem_data["description"]
+					 		display_name = craftitem_data["description"].split("\n").first
 					 		break
 					 	end
 					 end

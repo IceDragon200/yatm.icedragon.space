@@ -15,7 +15,7 @@
 			<div>
 				<div class="ma3 dib">
 					<% data[:sub_craftitems].sort_by { |(_craftitem_name, craftitem_data)| craftitem_data[:display_name] }.each do |(craftitem_name, craftitem_data)| %>
-						<div class="focus-container mb2" tabindex="1">
+						<div class="focus-container mb2 dib" tabindex="1">
 							<div class="dib" style="line-height: 0;">
 								<img src="<%= import_asset('atlas:/images/craftitems/' + craftitem_data[:mod_name] + '/' + craftitem_data[:name] + '/x4.png') %>" />
 							</div>

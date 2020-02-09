@@ -30,15 +30,28 @@ module AtlasBuilder
     end
   end
 
-  def self.get_tile_name(tile_name)
-    case tile_name
-    when String
-      tile_name
-    when Hash
-      tile_name["name"]
+  def self.get_tile_names(tile_name)
+    name =
+      case tile_name
+      when String
+        tile_name
+      when Hash
+        tile_name["name"]
+      else
+        raise "unexpected tile_name `#{tile_name}`"
+      end
+
+    base, rest = name.split("^", 2)
+
+    if rest
+      if rest[0] == "["
+        [base]
+      else
+        [base, *rest.split("^")]
+      end
     else
-      raise "unexpected tile_name #{tile_name}"
-    end.split("^")[0]
+      [base]
+    end
   end
 
   def self.build_node_atlas(mod_name, node_name, node_data, target_dir, root_tmp_dir)
@@ -47,30 +60,60 @@ module AtlasBuilder
     else
       return
     end
-    tiles = node_data["tiles"].to_a.map { |(key, value)| [key.to_i, value] }.sort
-    special_tiles = node_data["special_tiles"].to_a.map { |(key, value)| [key.to_i, value] }.sort
+
+    node_tiles = node_data["tiles"]
+    tiles =
+      case node_tiles
+      when Hash
+        node_tiles.to_a.map { |(key, value)| [key.to_i, value] }.sort
+      when Array
+        node_tiles.each_with_index.map do |value, key|
+          [key, value]
+        end
+      when nil
+        []
+      end
+
+    special_node_tiles = node_data["special_tiles"]
+    special_tiles =
+      case special_node_tiles
+      when Hash
+        special_node_tiles.to_a.map { |(key, value)| [key.to_i, value] }.sort
+      when Array
+        special_node_tiles.each_with_index.map do |value, key|
+          [key, value]
+        end
+      else
+        []
+      end
 
     ctx = Compose::Context.new("web/atlas/#{mod_name}/#{node_name}", root_dir: root_tmp_dir)
     #ctx.add_reference(nil, __FILE__)
 
     index_tile_names =
-      tiles.map do |i, tile_name|
-        [i, get_tile_name(tile_name)]
+      tiles.map do |(i, tile_name)|
+        [i, get_tile_names(tile_name)]
       end
 
     index_special_tile_names =
-      special_tiles.map do |i, tile_name|
-        [i, get_tile_name(tile_name)]
+      special_tiles.map do |(i, tile_name)|
+        [i, get_tile_names(tile_name)]
       end
 
-    index_tile_names.each do |(i, tile_name)|
-      ctx.add_reference(nil, texture_map[tile_name])
-      ctx.tag("tile.#{i}", tile_name)
+    index_tile_names.each do |(i, tile_names)|
+      tile_names.each_with_index do |tile_name, layer_id|
+        ctx.add_reference(nil, texture_map[tile_name])
+        ctx.tag("tile.#{i}.#{layer_id}", tile_name)
+      end
     end
-    index_special_tile_names.each do |(i, tile_name)|
-      ctx.add_reference(nil, texture_map[tile_name])
-      ctx.tag("special_tile.#{i}", tile_name)
+
+    index_special_tile_names.each do |(i, tile_names)|
+      tile_names.each_with_index do |tile_name, layer_id|
+        ctx.add_reference(nil, texture_map[tile_name])
+        ctx.tag("special_tile.#{i}.#{layer_id}", tile_name)
+      end
     end
+
     if ctx.is_modified?
       if not ctx.all_tags_referenced?
         puts "Tags Mismatch"
@@ -87,32 +130,30 @@ module AtlasBuilder
 
     p2 = fit_pow2((tiles.size + 1) / 2)
 
-    cw = ch = 16
-    image_w = p2 * cw
-    image_h = p2 * ch
-    image_buffers = thread_pool.thread_limit.times.map do
-      Minil::Image.create(image_w, image_h)
-    end
-
     preloaded = {}
 
     begin
-      index_tile_names.each do |(_i, tile_name)|
-        texture_filename = texture_map[tile_name]
-        if texture_filename then
-          thread_pool.spawn do
-            preloaded[tile_name] ||= begin
-              Minil::Image.load_file(texture_filename)
+      index_tile_names.each do |(_i, tile_names)|
+        tile_names.each do |tile_name|
+          texture_filename = texture_map[tile_name]
+          if texture_filename then
+            thread_pool.spawn do
+              preloaded[tile_name] ||= begin
+                Minil::Image.load_file(texture_filename)
+              end
             end
           end
         end
       end
-      index_special_tile_names.each do |(_i, tile_name)|
-        texture_filename = texture_map[tile_name]
-        if texture_filename then
-          thread_pool.spawn do
-            preloaded[tile_name] ||= begin
-              Minil::Image.load_file(texture_filename)
+
+      index_special_tile_names.each do |(_i, tile_names)|
+        tile_names.each do |tile_name|
+          texture_filename = texture_map[tile_name]
+          if texture_filename then
+            thread_pool.spawn do
+              preloaded[tile_name] ||= begin
+                Minil::Image.load_file(texture_filename)
+              end
             end
           end
         end
@@ -121,47 +162,62 @@ module AtlasBuilder
       thread_pool.await(120)
     end
 
-    frame_count = preloaded.reduce(1) do |acc, (tile_name, tile_image)|
-      rows = tile_image.height / ch
-      [rows, acc].max
+    cw = ch = 16
+    image_w = p2 * cw
+    image_h = p2 * ch
+    image_buffers = thread_pool.thread_limit.times.map do
+      Minil::Image.create(image_w, image_h)
     end
+
+    frame_count =
+      preloaded.reduce(1) do |acc, (tile_name, tile_image)|
+        rows = tile_image.height / ch
+        [rows, acc].max
+      end
 
     frame_filenames = []
     begin
       frame_count.times do |frame_index|
         thread_pool.spawn do |index:, job_id:|
           image = image_buffers[index]
+          image.clear()
           index_tile_names.each do |(i, tile_name)|
-            x = cw * (i % p2)
-            y = ch * (i / p2)
-            case node_data["paramtype2"]
-            when "facedir"
-              :ok
-            when "flowingliquid"
-              :ok
-            when "none"
-              :ok
-            when "glasslikeliquidlevel"
-              index_special_tile_names.each do |(_i, special_tile_name)|
-                special_tile_image = preloaded[special_tile_name]
-                if special_tile_image then
-                  rows = (special_tile_image.height / ch)
-                  row = (frame_index % rows)
-                  image.blit(special_tile_image, x + 1, y + 1, 1, 1 + row * ch, cw - 2, ch - 2)
-                else
-                  puts "WARN: missing special tile texture: #{special_tile_name}"
+            tile_name.each_with_index do |tile_name, layer_id|
+              x = cw * (i % p2)
+              y = ch * (i / p2)
+              case node_data["paramtype2"]
+              when "facedir"
+                :ok
+              when "flowingliquid"
+                :ok
+              when "none"
+                :ok
+              when "glasslikeliquidlevel"
+                index_special_tile_names.each do |(_i, special_tile_name)|
+                  special_tile_image = preloaded[special_tile_name]
+                  if special_tile_image then
+                    rows = (special_tile_image.height / ch)
+                    row = (frame_index % rows)
+                    image.blit(special_tile_image, x + 1, y + 1, 1, 1 + row * ch, cw - 2, ch - 2)
+                  else
+                    puts "WARN: missing special tile texture: #{special_tile_name}"
+                  end
                 end
+              else
+                raise "unexpected paramtype2 #{node_data["paramtype2"].inspect}"
               end
-            else
-              raise "unexpected paramtype2 #{node_data["paramtype2"].inspect}"
-            end
-            tile_image = preloaded[tile_name]
-            if tile_image then
-              rows = (tile_image.height / ch)
-              row = (frame_index % rows)
-              image.blit(tile_image, x, y, 0, row * ch, cw, ch)
-            else
-              puts "WARN: missing tile texture: #{tile_name}"
+              tile_image = preloaded[tile_name]
+              if tile_image then
+                rows = (tile_image.height / ch)
+                row = (frame_index % rows)
+                if layer_id == 0 then
+                  image.blit(tile_image, x, y, 0, row * ch, cw, ch)
+                else
+                  image.alpha_blit(tile_image, x, y, 0, row * ch, cw, ch)
+                end
+              else
+                puts "WARN: missing tile texture: #{tile_name}"
+              end
             end
           end
 
@@ -170,7 +226,6 @@ module AtlasBuilder
           FileUtils.mkdir_p File.dirname(target_filename)
           puts "save: #{target_filename}"
           image.save_file(target_filename)
-          image.clear()
         end
       end
     ensure
