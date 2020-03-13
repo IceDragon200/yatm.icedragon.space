@@ -1,0 +1,407 @@
+<%
+nmos_assembly = {
+  "adc" => {
+    overloads: [
+      "immediate",
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+      "absolute_y",
+      "indirect_x",
+      "indirect_y",
+    ]
+  },
+  "and" => {
+    overloads: [
+      "immediate",
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+      "absolute_y",
+      "indirect_x",
+      "indirect_y",
+    ]
+  },
+  "asl" => {
+    overloads: [
+      "register_a",
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+    ]
+  },
+  "bit" => {
+    overloads: [
+      "zeropage",
+      "absolute",
+    ]
+  },
+
+  "bpl" => {
+    overloads: [],
+  },
+  "bmi" => {
+    overloads: [],
+  },
+  "bvc" => {
+    overloads: [],
+  },
+  "bcc" => {
+    overloads: [],
+  },
+  "bcs" => {
+    overloads: [],
+  },
+  "bne" => {
+    overloads: [],
+  },
+  "beq" => {
+    overloads: [],
+  },
+
+  "brk" => {
+    overloads: [],
+  },
+
+  "cmp" => {
+    overloads: [
+      "immediate",
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+      "absolute_y",
+      "indirect_x",
+      "indirect_y",
+    ]
+  },
+
+  "cpx" => {
+    overloads: [
+      "immediate",
+      "zeropage",
+      "absolute",
+    ]
+  },
+
+  "cpy" => {
+    overloads: [
+      "immediate",
+      "zeropage",
+      "absolute",
+    ]
+  },
+
+  "dec" => {
+    overloads: [
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+    ]
+  },
+
+  "eor" => {
+    overloads: [
+      "immediate",
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+      "absolute_y",
+      "indirect_x",
+      "indirect_y",
+    ]
+  },
+
+  "clc" => {
+    overloads: [],
+  },
+  "sec" => {
+    overloads: [],
+  },
+  "cli" => {
+    overloads: [],
+  },
+  "sei" => {
+    overloads: [],
+  },
+  "clv" => {
+    overloads: [],
+  },
+  "cld" => {
+    overloads: [],
+  },
+  "sed" => {
+    overloads: [],
+  },
+
+  "inc" => {
+    overloads: [
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+    ]
+  },
+  "jmp" => {
+    overloads: [
+      "absolute",
+      "indirect",
+    ]
+  },
+  "jsr" => {
+    overloads: [
+      "absolute",
+    ]
+  },
+
+  "lda" => {
+    overloads: [
+      "immediate",
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+      "absolute_y",
+      "indirect_x",
+      "indirect_y",
+    ]
+  },
+  "ldx" => {
+    overloads: [
+      "immediate",
+      "zeropage",
+      "zeropage_y",
+      "absolute",
+      "absolute_y",
+    ]
+  },
+  "ldy" => {
+    overloads: [
+      "immediate",
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+    ]
+  },
+  "lsr" => {
+    overloads: [
+      "register_a",
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+    ]
+  },
+
+  "nop" => {
+    overloads: [],
+  },
+
+  "ora" => {
+    overloads: [
+      "immediate",
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+      "absolute_y",
+      "indirect_x",
+      "indirect_y",
+    ]
+  },
+
+  "tax" => {
+    overloads: [],
+  },
+  "txa" => {
+    overloads: [],
+  },
+  "dex" => {
+    overloads: [],
+  },
+  "inx" => {
+    overloads: [],
+  },
+  "tay" => {
+    overloads: [],
+  },
+  "tya" => {
+    overloads: [],
+  },
+  "dey" => {
+    overloads: [],
+  },
+  "iny" => {
+    overloads: [],
+  },
+
+  "rol" => {
+    overloads: [
+      "register_a",
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+    ]
+  },
+  "ror" => {
+    overloads: [
+      "register_a",
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+    ]
+  },
+
+  "rti" => {
+    overloads: [],
+  },
+  "rts" => {
+    overloads: [],
+  },
+
+  "sbc" => {
+    overloads: [
+      "immediate",
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+      "absolute_y",
+      "indirect_x",
+      "indirect_y",
+    ]
+  },
+  "sta" => {
+    overloads: [
+      "zeropage",
+      "zeropage_x",
+      "absolute",
+      "absolute_x",
+      "absolute_y",
+      "indirect_x",
+      "indirect_y",
+    ]
+  },
+  "txs" => {
+    overloads: [],
+  },
+  "tsx" => {
+    overloads: [],
+  },
+  "pha" => {
+    overloads: [],
+  },
+  "pla" => {
+    overloads: [],
+  },
+  "php" => {
+    overloads: [],
+  },
+  "plp" => {
+    overloads: [],
+  },
+  "stx" => {
+    overloads: [
+      "zeropage",
+      "zeropage_y",
+      "absolute",
+    ]
+  },
+  "sty" => {
+    overloads: [
+      "zeropage_x",
+      "zeropage",
+      "absolute",
+    ]
+  },
+}
+%>
+<section class="Page OKU-MOS6502-Reference">
+  <div class="box ba bw1 flex flex-column flex-auto mb3">
+    <div class="header">
+      <h2 class="bg0 fg1 ph3 pv2">Instructions</h2>
+    </div>
+
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Comment</th>
+        </tr>
+      </thead>
+
+      <tbody>
+      <% nmos_assembly.keys.sort.each do |key|
+         item = nmos_assembly[key] %>
+        <tr>
+          <td><a href="#<%= key.upcase %>"><%= key.upcase %></a></td>
+          <td><%= item[:comment] %></td>
+        </tr>
+      <% end %>
+      </tbody>
+    </table>
+  </div>
+
+  <% nmos_assembly.keys.sort.each do |key|
+     item = nmos_assembly[key] %>
+  <div id="<%= key.upcase %>" class="box ba bw1 flex flex-column flex-auto mb3">
+    <div class="header">
+      <h2 class="bg0 fg1 ph3 pv2"><%= key.upcase %></h2>
+    </div>
+
+    <div class="content flex">
+      <div class="fl w-third ph3 pv2">
+      <% if item[:overloads].empty? %>
+        <%# This is an implied instruction %>
+        <div><code><%= key.upcase %></code></div>
+      <% else %>
+        <% item[:overloads].each do |type| %>
+        <div><code>
+        <%   case type %>
+        <%   when "register_a" %>
+          <%= key.upcase %> A
+        <%   when "immediate" %>
+          <%= key.upcase %> #
+        <%   when "zeropage" %>
+          <%= key.upcase %> $LL
+        <%   when "zeropage_x" %>
+          <%= key.upcase %> $LL, X
+        <%   when "zeropage_y" %>
+          <%= key.upcase %> $LL, Y
+        <%   when "absolute" %>
+          <%= key.upcase %> $HHLL
+        <%   when "absolute_x" %>
+          <%= key.upcase %> $HHLL, X
+        <%   when "absolute_y" %>
+          <%= key.upcase %> $HHLL, Y
+        <%   when "indirect" %>
+          <%= key.upcase %> ($HHLL)
+        <%   when "indirect_x" %>
+          <%= key.upcase %> ($LL, X)
+        <%   when "indirect_y" %>
+          <%= key.upcase %> ($LL), Y
+        <%   else
+               raise "unexpected type #{type}" %>
+        <%   end %>
+        </code></div>
+        <% end %>
+      <% end %>
+      </div>
+
+      <div class="fl w-two-thirds bg-near-white ph3 pv2">
+        <code>
+          SAMPLE CODE GOES HERE
+        </code>
+      </div>
+    </div>
+  </div>
+  <% end %>
+</section>

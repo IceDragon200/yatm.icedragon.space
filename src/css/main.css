@@ -10,7 +10,7 @@ html {
 }
 
 body {
-  font-family: 'Barlow', monospace;
+  font-family: 'Barlow', sans-serif, monospace;
   margin: 0;
   padding: 0;
   line-height: 1.5;
@@ -68,6 +68,26 @@ a:hover {
 
 .bg0 {
   background-color: #000;
+}
+
+.bg-data-pink {
+  background-color: #D81B60;
+}
+
+.bg-device-teal {
+  background-color: #00897B;
+}
+
+.bg-mesecon-yellow {
+  background-color: #FFFF00;
+}
+
+.bg-developer-deep-purple {
+  background-color: #5E35B1;
+}
+
+.fg0 {
+  color: #000;
 }
 
 .fg1 {
@@ -224,4 +244,36 @@ header nav a:focus {
 
 .mxw-100 {
   max-width: 100%;
+}
+
+table.table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.table th, table.table td {
+  padding: 0.5rem;
+  border: 2px solid #000;
+}
+
+table.table {
+  border-bottom: 8px solid #000;
+}
+
+table.table th {
+  border-bottom: 4px solid #000;
+}
+
+.box.ba > table.table {
+  border-left-width: 0;
+  border-right-width: 0;
+  border-bottom-width: 6px;
+}
+
+.box.ba > table.table th:first-child, .box.ba > table.table td:first-child {
+  border-left-width: 0;
+}
+
+.box.ba > table.table th:last-child, .box.ba > table.table td:last-child {
+  border-right-width: 0;
 }

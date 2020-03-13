@@ -2,7 +2,9 @@
 	<div class="box ba bw1 flex flex-column flex-auto">
 		<div class="header">
 			<div class="heading bg0 fg1 ph3 pv2">
-				<h5><%= data[:mod_name] %></h5>
+				<h5>
+					<a class="fg1" href="/mods/<%= data[:mod_name] %>"><%= data[:mod_name] %></a>
+				</h5>
 				<h2>
 					<a class="fg1" href="/tools/<%= data[:mod_name] %>/<%= data[:name] %>">
 						<%= data[:display_name] %>

@@ -4,53 +4,54 @@
   <title><%= data[:title] %></title>
   <meta charset="utf-8">
   <meta http-equiv="X-UA-Compatible" content="IE=Edge">
-	<meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link href="https://fonts.googleapis.com/css?family=Barlow:400,700&display=swap" rel="stylesheet">
-	<link href="<%= import_asset('@:/css/tachyons.css') %>" rel="stylesheet" />
-	<link href="<%= import_asset('@:/css/main.css') %>" rel="stylesheet" />
+  <link href="<%= import_asset('@:/css/tachyons.css') %>" rel="stylesheet" />
+  <link href="<%= import_asset('@:/css/main.css') %>" rel="stylesheet" />
 </head>
 
 <body <%= data[:embedded] ? 'class="embedded"' : '' %> >
-	<% unless data[:embedded] %>
-	<header>
-		<h1 class="bg0 ph3 pv2 f1">
-			<a class="fg1" href="/">
-				<img width="32px" height="32px" alt="Mod Logo" src="<%= import_asset('@:/images/logo_white.png') %>" >
-				<%= data[:title] %>
-			</a>
-		</h1>
+  <% unless data[:embedded] %>
+  <header>
+    <h1 class="bg0 ph3 pv2 f1">
+      <a class="fg1" href="/">
+        <img width="32px" height="32px" alt="Mod Logo" src="<%= import_asset('@:/images/logo_white.png') %>" >
+        <%= data[:title] %>
+      </a>
+    </h1>
 
-		<nav class="mt3">
-			<a class="<%= data[:path] == '/' ? 'active' : '' %>" href="/">About</a>
-			<a class="<%= data[:path].start_with?('/posts') ? 'active' : '' %>" href="/posts">Posts</a>
-			<a class="<%= data[:path].start_with?('/mods') ? 'active' : '' %>" href="/mods">Mods</a>
-			<a class="<%= data[:path].start_with?('/craftitems') ? 'active' : '' %>" href="/craftitems">Craft Items</a>
-			<a class="<%= data[:path].start_with?('/tools') ? 'active' : '' %>" href="/tools">Tools</a>
-			<a class="<%= data[:path].start_with?('/nodes') ? 'active' : '' %>" href="/nodes">Nodes</a>
-			<a class="<%= data[:path].start_with?('/tutorials') ? 'active' : '' %>" href="/tutorials">Tutorials</a>
-			<a class="<%= data[:path].start_with?('/downloads') ? 'active' : '' %>" href="/downloads">Downloads</a>
-			<a class="<%= data[:path].start_with?('/website') ? 'active' : '' %>" href="/website">Website</a>
-		</nav>
+    <nav class="mt3">
+      <a class="<%= data[:path] == '/' ? 'active' : '' %>" href="/">About</a>
+      <a class="<%= data[:path].start_with?('/posts') ? 'active' : '' %>" href="/posts">Posts</a>
+      <a class="<%= data[:path].start_with?('/lore') ? 'active' : '' %>" href="/lore">Lore</a>
+      <a class="<%= data[:path].start_with?('/mods') ? 'active' : '' %>" href="/mods">Mods</a>
+      <a class="<%= data[:path].start_with?('/craftitems') ? 'active' : '' %>" href="/craftitems">Craft Items</a>
+      <a class="<%= data[:path].start_with?('/tools') ? 'active' : '' %>" href="/tools">Tools</a>
+      <a class="<%= data[:path].start_with?('/nodes') ? 'active' : '' %>" href="/nodes">Nodes</a>
+      <a class="<%= data[:path].start_with?('/tutorials') ? 'active' : '' %>" href="/tutorials">Tutorials</a>
+      <a class="<%= data[:path].start_with?('/downloads') ? 'active' : '' %>" href="/downloads">Downloads</a>
+      <a class="<%= data[:path].start_with?('/website') ? 'active' : '' %>" href="/website">Website</a>
+    </nav>
 
-		<!--
-			This... causes problems on mobile, I'll restore it later if I feel like it.
-		<a href="https://github.com/IceDragon200/mt-yatm">
-			<img width="149"
-					 height="149"
-					 src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149"
-					 class="attachment-full size-full"
-					 alt="Fork me on GitHub"
-					 data-recalc-dims="1" >
-		</a>-->
-	</header>
-	<% end %>
-	<main>
-		<%= yield %>
-	</main>
-	<% unless data[:embedded] %>
-	<footer>
-		<span class="Copyright">&#169; <%= Time.now.year %> Corey Powell</span>
-	</footer>
-	<% end %>
+    <!--
+      This... causes problems on mobile, I'll restore it later if I feel like it.
+    <a href="https://github.com/IceDragon200/mt-yatm">
+      <img width="149"
+           height="149"
+           src="https://github.blog/wp-content/uploads/2008/12/forkme_right_darkblue_121621.png?resize=149%2C149"
+           class="attachment-full size-full"
+           alt="Fork me on GitHub"
+           data-recalc-dims="1" >
+    </a>-->
+  </header>
+  <% end %>
+  <main>
+    <%= yield %>
+  </main>
+  <% unless data[:embedded] %>
+  <footer>
+    <span class="Copyright">&#169; <%= Time.now.year %> Corey Powell</span>
+  </footer>
+  <% end %>
 </body>
 </html>

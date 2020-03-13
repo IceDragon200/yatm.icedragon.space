@@ -2,6 +2,7 @@ require 'minil'
 require 'fileutils'
 require_relative '../resources/compose_context'
 require 'dragontk/thread_pool'
+require 'pathname'
 
 module AtlasBuilder
   def self.fit_pow2(value)

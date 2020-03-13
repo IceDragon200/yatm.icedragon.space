@@ -1,5 +1,4 @@
 #!/usr/bin/env ruby
-require 'toml-rb'
 require 'redcarpet'
 require 'json'
 require 'yaml'
@@ -29,7 +28,21 @@ module ModConf
   end
 end
 
+module TemplateHelpers
+  def html_escape(str)
+    CGI::escapeHTML(str).strip
+  end
+
+  def html_code(language, code)
+    <<~__END__
+    <pre><code class="language-#{language}">#{html_escape code.strip}</code></pre>
+    __END__
+  end
+end
+
 class TemplateContext
+  include TemplateHelpers
+
   attr_reader :data
 
   def initialize(filename, data, assets)
@@ -58,6 +71,8 @@ class TemplateContext
 end
 
 class ComponentContext
+  include TemplateHelpers
+
   @@component_cache = {}
 
   attr_reader :name
@@ -548,6 +563,13 @@ class Application
     )
   end
 
+  def build_lore_pages
+    render_component_to_file(File.join(@dist_dir, 'lore/index.html'), "lore/Index",
+      "YATM / Lore",
+      path: '/lore'
+    )
+  end
+
   def build_design_pages
     render_component_to_file(File.join(@dist_dir, 'design/index.html'), "design/Index",
       "YATM / Design",
@@ -556,6 +578,18 @@ class Application
   end
 
   def build_tutorials_pages
+    doc = YAML.load_file(File.join(@src_dir, 'tutorial-routes.yaml'))
+
+    pages = doc['pages']
+
+    pages.each do |page|
+      render_component_to_file(File.join(@dist_dir, page['name']), page['component'],
+        page['title'],
+        path: page['path'],
+        page: page
+      )
+    end
+
     render_component_to_file(File.join(@dist_dir, 'tutorials/index.html'), "tutorials/Index",
       "YATM / Tutorials",
       path: '/tutorials'
@@ -713,6 +747,7 @@ class Application
     build_craftitems_pages()
     build_home_pages()
     build_posts_pages()
+    build_lore_pages()
     build_design_pages()
     build_tutorials_pages()
     build_mod_pages()

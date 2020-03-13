@@ -1,0 +1,18 @@
+---
+pages:
+# Developer Docs
+- title: 'YATM / Developers / Blasts API'
+  name: 'tutorials/developer/blasts_api.html'
+  path: '/tutorials/developer/blasts_api'
+  component: 'tutorials/developer/blasts_api'
+
+- title: 'YATM / Developers / Armoury API'
+  name: 'tutorials/developer/armoury_api.html'
+  path: '/tutorials/developer/armoury_api'
+  component: 'tutorials/developer/armoury_api'
+
+# OKU User Docs
+- title: 'YATM / OKU / MOS6502 Reference'
+  name: 'tutorials/oku/mos6502_reference.html'
+  path: '/tutorials/oku/mos6502_reference'
+  component: 'tutorials/oku/mos6502_reference'
